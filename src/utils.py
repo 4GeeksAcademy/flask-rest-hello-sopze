@@ -1,4 +1,5 @@
 from flask import jsonify, url_for
+import re
 
 class APIException(Exception):
     status_code = 400
@@ -31,11 +32,39 @@ def generate_sitemap(app):
                 links.append(url)
 
     links_html = "".join(["<li><a href='" + y + "'>" + y + "</a></li>" for y in links])
-    return """
-        <div style="text-align: center;">
-        <img style="max-height: 80px" src='https://storage.googleapis.com/breathecode/boilerplates/rigo-baby.jpeg' />
-        <h1>Rigo welcomes you to your API!!</h1>
-        <p>API HOST: <script>document.write('<input style="padding: 5px; width: 300px" type="text" value="'+window.location.href+'" />');</script></p>
-        <p>Start working on your proyect by following the <a href="https://start.4geeksacademy.com/starters/flask" target="_blank">Quick Start</a></p>
-        <p>Remember to specify a real endpoint path like: </p>
-        <ul style="text-align: left;">"""+links_html+"</ul></div>"
+    return f"""
+    <html style="background: #111">
+        <head>
+            <style>
+                :root {{ color: #eee; }}
+                .title {{ padding:0; margin:4px; & .old {{ color: #444; text-decoration: line-through solid #aa3333 4px; }} & .new {{ color: #e20; }} }}
+                .subtitle {{ padding:0; margin:0; font-size:12px; color: #777 }}
+                .doomguy {{
+                    width: 256px; height: auto;
+                    image-rendering: pixelated;
+                    filter: drop-shadow(0 0 32px #000);
+                }}
+                ul {{ margin-left: 5%; text-align: left; list-style-type: none }}
+                li {{ padding: .1em; }}
+                li a {{ font-size: 14px; color: #66ff00; text-decoration: none; font-weight: 700 }}
+            </style>
+        </head>
+        <body>
+            <div style="text-align: center; font-family: sans-serif; padding-top: 16px;">
+                <img class="doomguy" src="https://i.imgur.com/O1w94Wp.png" />
+                <h2 class="title"><span class="old">Rigo</span> <span class="new">Doomguy</span> welcomes you to your API!!</h2>
+                <p class="subtitle">(he finally killed rigo baby)</p>
+                <p><script>document.write('<input style="padding: 5px; width: 500px" type="text" value="'+window.location.href+'" />');</script></p>
+                <ul>
+                    {links_html}
+                </ul>
+            </div>
+        </body>
+    </html>
+    """
+
+def clear_database_records(db):
+    meta = db.metadata
+    for table in reversed(meta.sorted_tables):
+        db.session.execute(table.delete())
+    db.session.commit()
