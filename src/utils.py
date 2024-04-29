@@ -21,50 +21,57 @@ def has_no_empty_params(rule):
     arguments = rule.arguments if rule.arguments is not None else ()
     return len(defaults) >= len(arguments)
 
+def _get_url_color(url):
+    if "admin" in url:
+        return "#ffff00"
+    if "api" in url:
+        return "#66ff00"
+    elif "db" in url:
+        return "#ff6600"
+    elif url == "/":
+        return "#A4A4A4"
+    return "#aa77ff"
+
+def _get_link(url):
+    return [url, _get_url_color(url)]
+
+def _get_method(methods):
+    if "DELETE" in methods:
+        return [3, "DELETE"]
+    elif "POST" in methods:
+        return [2, "POST"]
+    elif "PUT" in methods:
+        return [1, "PUT"]
+    return [0, "GET"]
+
 def generate_sitemap(app):
-    links = ['/admin/']
+    admin_raw_link= '/admin/'
+    endpoint_raw_link= []
+    endpoint_raw_span= []
     for rule in app.url_map.iter_rules():
-        # Filter out rules we can't navigate to in a browser
-        # and rules that require parameters
-        if "GET" in rule.methods and has_no_empty_params(rule):
-            url = url_for(rule.endpoint, **(rule.defaults or {}))
-            if "/admin/" not in url:
-                links.append(url)
+        if "GET" in rule.methods and has_no_empty_params(rule) and not 'wipe' in rule.endpoint:
+            link= _get_method("GET") + _get_link(url_for(rule.endpoint, **(rule.defaults or {})))
+            if 'admin' not in link[2]:
+                endpoint_raw_link.append(link)
+        else:
+            str= rule.__str__()
+            if not re.search(r'static|export|admin', str):
+                result= _get_method(rule.methods) + [rule.__str__()]
+                if '<' in result[2]:
+                    result[2]= result[2].replace('<','<span class="arg">&lt;').replace('>','&gt;</span>')
+                endpoint_raw_span.append(result)
 
-    links_html = "".join(["<li><a href='" + y + "'>" + y + "</a></li>" for y in links])
-    return f"""
-    <html style="background: #111">
-        <head>
-            <style>
-                :root {{ color: #eee; }}
-                .title {{ padding:0; margin:4px; & .old {{ color: #444; text-decoration: line-through solid #aa3333 4px; }} & .new {{ color: #e20; }} }}
-                .subtitle {{ padding:0; margin:0; font-size:12px; color: #777 }}
-                .doomguy {{
-                    width: 256px; height: auto;
-                    image-rendering: pixelated;
-                    filter: drop-shadow(0 0 32px #000);
-                }}
-                ul {{ margin-left: 5%; text-align: left; list-style-type: none }}
-                li {{ padding: .1em; }}
-                li a {{ font-size: 14px; color: #66ff00; text-decoration: none; font-weight: 700 }}
-            </style>
-        </head>
-        <body>
-            <div style="text-align: center; font-family: sans-serif; padding-top: 16px;">
-                <img class="doomguy" src="https://i.imgur.com/O1w94Wp.png" />
-                <h2 class="title"><span class="old">Rigo</span> <span class="new">Doomguy</span> welcomes you to your API!!</h2>
-                <p class="subtitle">(he finally killed rigo baby)</p>
-                <p><script>document.write('<input style="padding: 5px; width: 500px" type="text" value="'+window.location.href+'" />');</script></p>
-                <ul>
-                    {links_html}
-                </ul>
-            </div>
-        </body>
-    </html>
-    """
+    admin_link= f"<p><a class=\"admin\" href=\"{admin_raw_link}\">Site admin: <span>{admin_raw_link}</span></a></p>"
+    endpoint_link = "".join([f"<li><div class=\"ept{y[0]}\">{y[1]}</div><a style=\"color: {y[3]}\" href=\"{y[2]}\">{y[2]}</a></li>" for y in endpoint_raw_link])
+    endpoint_span = "".join([f"<li><div class=\"ept{y[0]}\">{y[1]}</div>{y[2]}</li>" for y in endpoint_raw_span])
 
-def clear_database_records(db):
-    meta = db.metadata
-    for table in reversed(meta.sorted_tables):
-        db.session.execute(table.delete())
-    db.session.commit()
+    html= open("res/index.html",'r').read()
+    css= open("res/styles.css",'r').read()
+
+    page= html.replace(
+        "{css}",css).replace(
+        "{admin_link}",admin_link).replace(
+        "{endpoint_link}",endpoint_link).replace(
+        "{endpoint_span}",endpoint_span)
+
+    return page
