@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: final_swapi_db
+Revision ID: 6c599dbdde20
 Revises: 
-Create Date: 2024-04-29 12:23:49.319901
+Create Date: 2024-04-29 16:47:54.796493
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'final_swapi_db'
+revision = '6c599dbdde20'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -36,9 +36,9 @@ def upgrade():
     op.create_table('entities',
     sa.Column('_id', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('_tid', sa.Integer(), nullable=False),
-    sa.Column('name', sa.String(length=64), nullable=False),
-    sa.Column('description', sa.String(length=512), nullable=True),
-    sa.Column('properties', sa.String(length=32768), nullable=False),
+    sa.Column('name', sa.String(length=32), nullable=False),
+    sa.Column('description', sa.String(length=128), nullable=True),
+    sa.Column('properties', sa.String(length=2048), nullable=False),
     sa.Column('type_id', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['type_id'], ['entity_types._id'], ),
     sa.PrimaryKeyConstraint('_id'),
