@@ -1,6 +1,6 @@
 import os
 from flask_admin import Admin
-from models import db, User, Entity, Bookmark
+from models import db, User, Entity, EntityType, Bookmark
 from flask_admin.contrib.sqla import ModelView
 
 def setup_admin(app):
@@ -10,4 +10,5 @@ def setup_admin(app):
 
     admin.add_view(ModelView(User, db.session))
     admin.add_view(ModelView(Entity, db.session))
+    admin.add_view(ModelView(EntityType, db.session))
     admin.add_view(ModelView(Bookmark, db.session))

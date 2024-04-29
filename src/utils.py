@@ -66,7 +66,7 @@ def generate_sitemap(app):
     endpoint_span = "".join([f"<li><div class=\"ept{y[0]}\">{y[1]}</div>{y[2]}</li>" for y in endpoint_raw_span])
 
     html= open("res/index.html",'r').read()
-    css= open("res/styles.css",'r').read()
+    css= open("res/styles.css",'r').rgitead()
 
     page= html.replace(
         "{css}",css).replace(

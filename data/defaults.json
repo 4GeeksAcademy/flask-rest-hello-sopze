@@ -1,0 +1,218 @@
+{
+  "user": [
+    ["defaultuser", "default@email.com", "1234"],
+    ["teapot", "teapot@jemail.com", "imateapot1998"],
+    ["elmandangas", "mandangas69hotpenis@jemail.com", "5678"],
+    ["almejitafresca", "michochorechulon@email.com", "abcd"],
+    ["sopze", "sergiosopze@4geeks.com", "4geeks"]
+  ],
+  "entity_type": ["film", "people", "planet", "species", "starship", "vehicle"],
+  "entity": [
+    [
+      "film",
+      "A New Hope",
+      "A Star Wars Film",
+      {
+        "episode_id": 4,
+        "director": "George Lucas",
+        "producer": "Gary Kurtz, Rick McCallum",
+        "release_date": "1977-05-25",
+        "opening_crawl": "It is a period of civil war.\r\nRebel spaceships, striking\r\nfrom a hidden base, have won\r\ntheir first victory against\r\nthe evil Galactic Empire.\r\n\r\nDuring the battle, Rebel\r\nspies managed to steal secret\r\nplans to the Empire's\r\nultimate weapon, the DEATH\r\nSTAR, an armored space\r\nstation with enough power\r\nto destroy an entire planet.\r\n\r\nPursued by the Empire's\r\nsinister agents, Princess\r\nLeia races home aboard her\r\nstarship, custodian of the\r\nstolen plans that can save her\r\npeople and restore\r\nfreedom to the galaxy....",
+        "characters": [1, 2],
+        "planets": [1, 2],
+        "species": [1, 2],
+        "starships": [1, 2],
+        "vehicles": [1, 2]
+      }
+    ],
+    [
+      "film",
+      "The Empire Strikes Back",
+      "A Star Wars Film",
+      {
+        "episode_id": 5,
+        "director": "Irvin Kershner",
+        "producer": "Gary Kurtz, Rick McCallum",
+        "release_date": "1980-05-17",
+        "opening_crawl": "It is a dark time for the\r\nRebellion. Although the Death\r\nStar has been destroyed,\r\nImperial troops have driven the\r\nRebel forces from their hidden\r\nbase and pursued them across\r\nthe galaxy.\r\n\r\nEvading the dreaded Imperial\r\nStarfleet, a group of freedom\r\nfighters led by Luke Skywalker\r\nhas established a new secret\r\nbase on the remote ice world\r\nof Hoth.\r\n\r\nThe evil lord Darth Vader,\r\nobsessed with finding young\r\nSkywalker, has dispatched\r\nthousands of remote probes into\r\nthe far reaches of space....",
+        "characters": [],
+        "planets": [],
+        "species": [],
+        "starships": [],
+        "vehicles": []
+      }
+    ],
+    [
+      "people",
+      "Luke Skywalker",
+      "A person within the Star Wars universe",
+      {
+        "height": "172",
+        "mass": "77",
+        "hair_color": "blond",
+        "skin_color": "fair",
+        "eye_color": "blue",
+        "birth_year": "19BBY",
+        "gender": "male",
+        "homeworld": 1
+      }
+    ],
+    [
+      "people",
+      "C-3PO",
+      "A robot within the Star Wars universe",
+      {
+        "height": "167",
+        "mass": "75",
+        "hair_color": "n/a",
+        "skin_color": "gold",
+        "eye_color": "yellow",
+        "birth_year": "112BBY",
+        "gender": "n/a",
+        "homeworld": 2
+      }
+    ],
+    [
+      "planet",
+      "Tatooine",
+      "A planet.",
+      {
+        "diameter": "10465",
+        "rotation_period": "23",
+        "orbital_period": "304",
+        "gravity": "1 standard",
+        "population": "200000",
+        "climate": "arid",
+        "terrain": "desert",
+        "surface_water": "1"
+      }
+    ],
+    [
+      "planet",
+      "Alderaan",
+      "A planet.",
+      {
+        "diameter": "12500",
+        "rotation_period": "24",
+        "orbital_period": "364",
+        "gravity": "1 standard",
+        "population": "2000000000",
+        "climate": "temperate",
+        "terrain": "grasslands, mountains",
+        "surface_water": "40"
+      }
+    ],
+    [
+      "species",
+      "Human",
+      "A sepcies within the Star Wars universe",
+      {
+        "classification": "mammal",
+        "designation": "sentient",
+        "average_height": "180",
+        "average_lifespan": "120",
+        "hair_colors": "blonde, brown, black, red",
+        "skin_colors": "caucasian, black, asian, hispanic",
+        "eye_colors": "brown, blue, green, hazel, grey, amber",
+        "homeworld": 1,
+        "language": "Galactic Basic",
+        "people": [1]
+      }
+    ],
+    [
+      "species",
+      "Droid",
+      "A sepcies within the Star Wars universe",
+      {
+        "classification": "artificial",
+        "designation": "sentient",
+        "average_height": "n/a",
+        "average_lifespan": "indefinite",
+        "hair_colors": "n/a",
+        "skin_colors": "n/a",
+        "eye_colors": "n/a",
+        "homeworld": 2,
+        "language": "n/a",
+        "people": [2]
+      }
+    ],
+    [
+      "starship",
+      "CR90 corvette",
+      "A Starship",
+      {
+        "model": "CR90 Corvette",
+        "starship_class": "corvette",
+        "manufacturer": "Corellian Engineering Corporation",
+        "cost_in_credits": "3500000",
+        "length": "150",
+        "crew": "30-165",
+        "passengers": "600",
+        "max_atmosphering_speed": "950",
+        "hyperdrive_rating": "2.0",
+        "MGLT": "60",
+        "cargo_capacity": "3000000",
+        "consumables": "1 year",
+        "pilots": []
+      }
+    ],
+    [
+      "starship",
+      "Star Destroyer",
+      "A Starship",
+      {
+        "model": "Imperial I-class Star Destroyer",
+        "starship_class": "Star Destroyer",
+        "manufacturer": "Kuat Drive Yards",
+        "cost_in_credits": "150000000",
+        "length": "1,600",
+        "crew": "47,060",
+        "passengers": "n/a",
+        "max_atmosphering_speed": "975",
+        "hyperdrive_rating": "2.0",
+        "MGLT": "60",
+        "cargo_capacity": "36000000",
+        "consumables": "2 year",
+        "pilots": []
+      }
+    ],
+    [
+      "vehicle",
+      "Digger Crawler",
+      "A vehicle",
+      {
+        "model": "Digger Crawler",
+        "vehicle_class": "wheeled",
+        "manufacturer": "Corellia Mining Corporation",
+        "cost_in_credits": "150000",
+        "length": "36.8 ",
+        "crew": "46",
+        "passengers": "30",
+        "max_atmosphering_speed": "30",
+        "cargo_capacity": "50000",
+        "consumables": "2 months",
+        "films": [],
+        "pilots": []
+      }
+    ],
+    [
+      "vehicle",
+      "X-34 landspeeder",
+      "A vehicle",
+      {
+        "model": "X-34 landspeeder",
+        "vehicle_class": "repulsorcraft",
+        "manufacturer": "SoroSuub Corporation",
+        "cost_in_credits": "10550",
+        "length": "3.4 ",
+        "crew": "1",
+        "passengers": "1",
+        "max_atmosphering_speed": "250",
+        "cargo_capacity": "5",
+        "consumables": "unknown",
+        "films": [],
+        "pilots": []
+      }
+    ]
+  ]
+}
