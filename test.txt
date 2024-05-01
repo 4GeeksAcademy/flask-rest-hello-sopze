@@ -152,47 +152,47 @@
 {'request_class': 'type[Request]', 'response_class': 'type[Response]', 'session_interface': 'SessionInterface'}
 <bound method Flask.__call__ of <Flask 'app'>>
 <class 'flask.app.Flask'>
-<method-wrapper '__delattr__' of Flask object at 0x7f5232757f10>
-{'import_name': 'app', '_static_folder': 'static', '_static_url_path': None, 'template_folder': 'templates', 'root_path': '/workspaces/flask-rest-hello-sopze/src', 'view_functions': {'static': <function Flask.__init__.<locals>.<lambda> at 0x7f52314939a0>, 'admin.static': <bound method Blueprint.send_static_file of <Blueprint 'admin'>>, 'admin.index': <bound method AdminIndexView.index of <flask_admin.base.AdminIndexView object at 0x7f5230f4ba00>>, 'user.action_view': <bound method BaseModelView.action_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230fcc4c0>>, 'user.ajax_lookup': <bound method BaseModelView.ajax_lookup of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230fcc4c0>>, 'user.ajax_update': <bound method BaseModelView.ajax_update of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230fcc4c0>>, 'user.create_view': <bound method BaseModelView.create_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230fcc4c0>>, 'user.delete_view': <bound method BaseModelView.delete_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230fcc4c0>>, 'user.details_view': <bound method BaseModelView.details_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230fcc4c0>>, 'user.edit_view': <bound method BaseModelView.edit_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230fcc4c0>>, 'user.export': <bound method BaseModelView.export of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230fcc4c0>>, 'user.index_view': <bound method BaseModelView.index_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230fcc4c0>>, 'entity.action_view': <bound method BaseModelView.action_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230fcebf0>>, 'entity.ajax_lookup': <bound method BaseModelView.ajax_lookup of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230fcebf0>>, 'entity.ajax_update': <bound method BaseModelView.ajax_update of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230fcebf0>>, 'entity.create_view': <bound method BaseModelView.create_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230fcebf0>>, 'entity.delete_view': <bound method BaseModelView.delete_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230fcebf0>>, 'entity.details_view': <bound method BaseModelView.details_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230fcebf0>>, 'entity.edit_view': <bound method BaseModelView.edit_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230fcebf0>>, 'entity.export': <bound method BaseModelView.export of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230fcebf0>>, 'entity.index_view': <bound method BaseModelView.index_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230fcebf0>>, 'entitytype.action_view': <bound method BaseModelView.action_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230fbb760>>, 'entitytype.ajax_lookup': <bound method BaseModelView.ajax_lookup of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230fbb760>>, 'entitytype.ajax_update': <bound method BaseModelView.ajax_update of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230fbb760>>, 'entitytype.create_view': <bound method BaseModelView.create_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230fbb760>>, 'entitytype.delete_view': <bound method BaseModelView.delete_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230fbb760>>, 'entitytype.details_view': <bound method BaseModelView.details_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230fbb760>>, 'entitytype.edit_view': <bound method BaseModelView.edit_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230fbb760>>, 'entitytype.export': <bound method BaseModelView.export of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230fbb760>>, 'entitytype.index_view': <bound method BaseModelView.index_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230fbb760>>, 'bookmark.action_view': <bound method BaseModelView.action_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230cb4d00>>, 'bookmark.ajax_lookup': <bound method BaseModelView.ajax_lookup of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230cb4d00>>, 'bookmark.ajax_update': <bound method BaseModelView.ajax_update of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230cb4d00>>, 'bookmark.create_view': <bound method BaseModelView.create_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230cb4d00>>, 'bookmark.delete_view': <bound method BaseModelView.delete_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230cb4d00>>, 'bookmark.details_view': <bound method BaseModelView.details_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230cb4d00>>, 'bookmark.edit_view': <bound method BaseModelView.edit_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230cb4d00>>, 'bookmark.export': <bound method BaseModelView.export of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230cb4d00>>, 'bookmark.index_view': <bound method BaseModelView.index_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230cb4d00>>}, 'error_handler_spec': defaultdict(<function Scaffold.__init__.<locals>.<lambda> at 0x7f523279c1f0>, {}), 'before_request_funcs': defaultdict(<class 'list'>, {}), 'after_request_funcs': defaultdict(<class 'list'>, {None: [<function make_after_request_function.<locals>.cors_after_request at 0x7f5230f4fd00>]}), 'teardown_request_funcs': defaultdict(<class 'list'>, {}), 'template_context_processors': defaultdict(<class 'list'>, {None: [<function _default_template_ctx_processor at 0x7f52329df9a0>], 'admin': [<function _default_template_ctx_processor at 0x7f52329df9a0>], 'user': [<function _default_template_ctx_processor at 0x7f52329df9a0>], 'entity': [<function _default_template_ctx_processor at 0x7f52329df9a0>], 'entitytype': [<function _default_template_ctx_processor at 0x7f52329df9a0>], 'bookmark': [<function _default_template_ctx_processor at 0x7f52329df9a0>]}), 'url_value_preprocessors': defaultdict(<class 'list'>, {}), 'url_default_functions': defaultdict(<class 'list'>, {}), 'instance_path': '/workspaces/flask-rest-hello-sopze/src/instance', 'config': <Config {'DEBUG': True, 'TESTING': False, 'PROPAGATE_EXCEPTIONS': None, 'SECRET_KEY': 'any key works', 'PERMANENT_SESSION_LIFETIME': datetime.timedelta(days=31), 'USE_X_SENDFILE': False, 'SERVER_NAME': None, 'APPLICATION_ROOT': '/', 'SESSION_COOKIE_NAME': 'session', 'SESSION_COOKIE_DOMAIN': None, 'SESSION_COOKIE_PATH': None, 'SESSION_COOKIE_HTTPONLY': True, 'SESSION_COOKIE_SECURE': False, 'SESSION_COOKIE_SAMESITE': None, 'SESSION_REFRESH_EACH_REQUEST': True, 'MAX_CONTENT_LENGTH': None, 'SEND_FILE_MAX_AGE_DEFAULT': None, 'TRAP_BAD_REQUEST_ERRORS': None, 'TRAP_HTTP_EXCEPTIONS': False, 'EXPLAIN_TEMPLATE_LOADING': False, 'PREFERRED_URL_SCHEME': 'http', 'TEMPLATES_AUTO_RELOAD': None, 'MAX_COOKIE_SIZE': 4093, 'SQLALCHEMY_DATABASE_URI': 'sqlite:////tmp/swapi.db', 'SQLALCHEMY_TRACK_MODIFICATIONS': False, 'SQLALCHEMY_ENGINE_OPTIONS': {}, 'SQLALCHEMY_ECHO': False, 'SQLALCHEMY_BINDS': {}, 'SQLALCHEMY_RECORD_QUERIES': False, 'FLASK_ADMIN_SWATCH': 'cerulean'}>, 'aborter': <werkzeug.exceptions.Aborter object at 0x7f5232757c10>, 'json': <flask.json.provider.DefaultJSONProvider object at 0x7f52314a1060>, 'url_build_error_handlers': [], 'teardown_appcontext_funcs': [<bound method SQLAlchemy._teardown_session of <SQLAlchemy>>], 'shell_context_processors': [<function add_models_to_shell at 0x7f5230f4f7f0>], 'blueprints': {'admin': <Blueprint 'admin'>, 'user': <Blueprint 'user'>, 'entity': <Blueprint 'entity'>, 'entitytype': <Blueprint 'entitytype'>, 'bookmark': <Blueprint 'bookmark'>}, 'extensions': {'migrate': <flask_migrate._MigrateConfig object at 0x7f5230f49330>, 'sqlalchemy': <SQLAlchemy>, 'admin': [<flask_admin.base.Admin object at 0x7f5230f49ba0>]}, 'url_map': Map([<Rule '/static/<filename>' (HEAD, GET, OPTIONS) -> static>,
- <Rule '/admin/static/<filename>' (HEAD, GET, OPTIONS) -> admin.static>,
- <Rule '/admin/' (HEAD, GET, OPTIONS) -> admin.index>,
+<method-wrapper '__delattr__' of Flask object at 0x7f748641bd60>
+{'import_name': 'app', '_static_folder': 'static', '_static_url_path': None, 'template_folder': 'templates', 'root_path': '/workspaces/flask-rest-hello-sopze/src', 'view_functions': {'static': <function Flask.__init__.<locals>.<lambda> at 0x7f74851539a0>, 'admin.static': <bound method Blueprint.send_static_file of <Blueprint 'admin'>>, 'admin.index': <bound method AdminIndexView.index of <flask_admin.base.AdminIndexView object at 0x7f7484c17820>>, 'user.action_view': <bound method BaseModelView.action_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484c844c0>>, 'user.ajax_lookup': <bound method BaseModelView.ajax_lookup of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484c844c0>>, 'user.ajax_update': <bound method BaseModelView.ajax_update of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484c844c0>>, 'user.create_view': <bound method BaseModelView.create_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484c844c0>>, 'user.delete_view': <bound method BaseModelView.delete_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484c844c0>>, 'user.details_view': <bound method BaseModelView.details_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484c844c0>>, 'user.edit_view': <bound method BaseModelView.edit_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484c844c0>>, 'user.export': <bound method BaseModelView.export of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484c844c0>>, 'user.index_view': <bound method BaseModelView.index_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484c844c0>>, 'entity.action_view': <bound method BaseModelView.action_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484c86a10>>, 'entity.ajax_lookup': <bound method BaseModelView.ajax_lookup of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484c86a10>>, 'entity.ajax_update': <bound method BaseModelView.ajax_update of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484c86a10>>, 'entity.create_view': <bound method BaseModelView.create_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484c86a10>>, 'entity.delete_view': <bound method BaseModelView.delete_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484c86a10>>, 'entity.details_view': <bound method BaseModelView.details_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484c86a10>>, 'entity.edit_view': <bound method BaseModelView.edit_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484c86a10>>, 'entity.export': <bound method BaseModelView.export of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484c86a10>>, 'entity.index_view': <bound method BaseModelView.index_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484c86a10>>, 'entitytype.action_view': <bound method BaseModelView.action_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484c77760>>, 'entitytype.ajax_lookup': <bound method BaseModelView.ajax_lookup of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484c77760>>, 'entitytype.ajax_update': <bound method BaseModelView.ajax_update of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484c77760>>, 'entitytype.create_view': <bound method BaseModelView.create_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484c77760>>, 'entitytype.delete_view': <bound method BaseModelView.delete_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484c77760>>, 'entitytype.details_view': <bound method BaseModelView.details_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484c77760>>, 'entitytype.edit_view': <bound method BaseModelView.edit_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484c77760>>, 'entitytype.export': <bound method BaseModelView.export of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484c77760>>, 'entitytype.index_view': <bound method BaseModelView.index_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484c77760>>, 'bookmark.action_view': <bound method BaseModelView.action_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484974b20>>, 'bookmark.ajax_lookup': <bound method BaseModelView.ajax_lookup of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484974b20>>, 'bookmark.ajax_update': <bound method BaseModelView.ajax_update of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484974b20>>, 'bookmark.create_view': <bound method BaseModelView.create_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484974b20>>, 'bookmark.delete_view': <bound method BaseModelView.delete_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484974b20>>, 'bookmark.details_view': <bound method BaseModelView.details_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484974b20>>, 'bookmark.edit_view': <bound method BaseModelView.edit_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484974b20>>, 'bookmark.export': <bound method BaseModelView.export of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484974b20>>, 'bookmark.index_view': <bound method BaseModelView.index_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484974b20>>}, 'error_handler_spec': defaultdict(<function Scaffold.__init__.<locals>.<lambda> at 0x7f74864601f0>, {}), 'before_request_funcs': defaultdict(<class 'list'>, {}), 'after_request_funcs': defaultdict(<class 'list'>, {None: [<function make_after_request_function.<locals>.cors_after_request at 0x7f7484c0fd00>]}), 'teardown_request_funcs': defaultdict(<class 'list'>, {}), 'template_context_processors': defaultdict(<class 'list'>, {None: [<function _default_template_ctx_processor at 0x7f74866a39a0>], 'admin': [<function _default_template_ctx_processor at 0x7f74866a39a0>], 'user': [<function _default_template_ctx_processor at 0x7f74866a39a0>], 'entity': [<function _default_template_ctx_processor at 0x7f74866a39a0>], 'entitytype': [<function _default_template_ctx_processor at 0x7f74866a39a0>], 'bookmark': [<function _default_template_ctx_processor at 0x7f74866a39a0>]}), 'url_value_preprocessors': defaultdict(<class 'list'>, {}), 'url_default_functions': defaultdict(<class 'list'>, {}), 'instance_path': '/workspaces/flask-rest-hello-sopze/src/instance', 'config': <Config {'DEBUG': True, 'TESTING': False, 'PROPAGATE_EXCEPTIONS': None, 'SECRET_KEY': 'any key works', 'PERMANENT_SESSION_LIFETIME': datetime.timedelta(days=31), 'USE_X_SENDFILE': False, 'SERVER_NAME': None, 'APPLICATION_ROOT': '/', 'SESSION_COOKIE_NAME': 'session', 'SESSION_COOKIE_DOMAIN': None, 'SESSION_COOKIE_PATH': None, 'SESSION_COOKIE_HTTPONLY': True, 'SESSION_COOKIE_SECURE': False, 'SESSION_COOKIE_SAMESITE': None, 'SESSION_REFRESH_EACH_REQUEST': True, 'MAX_CONTENT_LENGTH': None, 'SEND_FILE_MAX_AGE_DEFAULT': None, 'TRAP_BAD_REQUEST_ERRORS': None, 'TRAP_HTTP_EXCEPTIONS': False, 'EXPLAIN_TEMPLATE_LOADING': False, 'PREFERRED_URL_SCHEME': 'http', 'TEMPLATES_AUTO_RELOAD': None, 'MAX_COOKIE_SIZE': 4093, 'SQLALCHEMY_DATABASE_URI': 'sqlite:////tmp/swapi.db', 'SQLALCHEMY_TRACK_MODIFICATIONS': False, 'SQLALCHEMY_ENGINE_OPTIONS': {}, 'SQLALCHEMY_ECHO': False, 'SQLALCHEMY_BINDS': {}, 'SQLALCHEMY_RECORD_QUERIES': False, 'FLASK_ADMIN_SWATCH': 'cerulean'}>, 'aborter': <werkzeug.exceptions.Aborter object at 0x7f748641bbe0>, 'json': <flask.json.provider.DefaultJSONProvider object at 0x7f7485160e80>, 'url_build_error_handlers': [], 'teardown_appcontext_funcs': [<bound method SQLAlchemy._teardown_session of <SQLAlchemy>>], 'shell_context_processors': [<function add_models_to_shell at 0x7f7484c0f7f0>], 'blueprints': {'admin': <Blueprint 'admin'>, 'user': <Blueprint 'user'>, 'entity': <Blueprint 'entity'>, 'entitytype': <Blueprint 'entitytype'>, 'bookmark': <Blueprint 'bookmark'>}, 'extensions': {'migrate': <flask_migrate._MigrateConfig object at 0x7f7484c15150>, 'sqlalchemy': <SQLAlchemy>, 'admin': [<flask_admin.base.Admin object at 0x7f7484c159c0>]}, 'url_map': Map([<Rule '/static/<filename>' (GET, HEAD, OPTIONS) -> static>,
+ <Rule '/admin/static/<filename>' (GET, HEAD, OPTIONS) -> admin.static>,
+ <Rule '/admin/' (GET, HEAD, OPTIONS) -> admin.index>,
  <Rule '/admin/user/action/' (POST, OPTIONS) -> user.action_view>,
- <Rule '/admin/user/ajax/lookup/' (HEAD, GET, OPTIONS) -> user.ajax_lookup>,
+ <Rule '/admin/user/ajax/lookup/' (GET, HEAD, OPTIONS) -> user.ajax_lookup>,
  <Rule '/admin/user/ajax/update/' (POST, OPTIONS) -> user.ajax_update>,
- <Rule '/admin/user/new/' (HEAD, POST, GET, OPTIONS) -> user.create_view>,
+ <Rule '/admin/user/new/' (GET, HEAD, POST, OPTIONS) -> user.create_view>,
  <Rule '/admin/user/delete/' (POST, OPTIONS) -> user.delete_view>,
- <Rule '/admin/user/details/' (HEAD, GET, OPTIONS) -> user.details_view>,
- <Rule '/admin/user/edit/' (HEAD, POST, GET, OPTIONS) -> user.edit_view>,
- <Rule '/admin/user/export/<export_type>/' (HEAD, GET, OPTIONS) -> user.export>,
- <Rule '/admin/user/' (HEAD, GET, OPTIONS) -> user.index_view>,
+ <Rule '/admin/user/details/' (GET, HEAD, OPTIONS) -> user.details_view>,
+ <Rule '/admin/user/edit/' (GET, HEAD, POST, OPTIONS) -> user.edit_view>,
+ <Rule '/admin/user/export/<export_type>/' (GET, HEAD, OPTIONS) -> user.export>,
+ <Rule '/admin/user/' (GET, HEAD, OPTIONS) -> user.index_view>,
  <Rule '/admin/entity/action/' (POST, OPTIONS) -> entity.action_view>,
- <Rule '/admin/entity/ajax/lookup/' (HEAD, GET, OPTIONS) -> entity.ajax_lookup>,
+ <Rule '/admin/entity/ajax/lookup/' (GET, HEAD, OPTIONS) -> entity.ajax_lookup>,
  <Rule '/admin/entity/ajax/update/' (POST, OPTIONS) -> entity.ajax_update>,
- <Rule '/admin/entity/new/' (HEAD, POST, GET, OPTIONS) -> entity.create_view>,
+ <Rule '/admin/entity/new/' (GET, HEAD, POST, OPTIONS) -> entity.create_view>,
  <Rule '/admin/entity/delete/' (POST, OPTIONS) -> entity.delete_view>,
- <Rule '/admin/entity/details/' (HEAD, GET, OPTIONS) -> entity.details_view>,
- <Rule '/admin/entity/edit/' (HEAD, POST, GET, OPTIONS) -> entity.edit_view>,
- <Rule '/admin/entity/export/<export_type>/' (HEAD, GET, OPTIONS) -> entity.export>,
- <Rule '/admin/entity/' (HEAD, GET, OPTIONS) -> entity.index_view>,
+ <Rule '/admin/entity/details/' (GET, HEAD, OPTIONS) -> entity.details_view>,
+ <Rule '/admin/entity/edit/' (GET, HEAD, POST, OPTIONS) -> entity.edit_view>,
+ <Rule '/admin/entity/export/<export_type>/' (GET, HEAD, OPTIONS) -> entity.export>,
+ <Rule '/admin/entity/' (GET, HEAD, OPTIONS) -> entity.index_view>,
  <Rule '/admin/entitytype/action/' (POST, OPTIONS) -> entitytype.action_view>,
- <Rule '/admin/entitytype/ajax/lookup/' (HEAD, GET, OPTIONS) -> entitytype.ajax_lookup>,
+ <Rule '/admin/entitytype/ajax/lookup/' (GET, HEAD, OPTIONS) -> entitytype.ajax_lookup>,
  <Rule '/admin/entitytype/ajax/update/' (POST, OPTIONS) -> entitytype.ajax_update>,
- <Rule '/admin/entitytype/new/' (HEAD, POST, GET, OPTIONS) -> entitytype.create_view>,
+ <Rule '/admin/entitytype/new/' (GET, HEAD, POST, OPTIONS) -> entitytype.create_view>,
  <Rule '/admin/entitytype/delete/' (POST, OPTIONS) -> entitytype.delete_view>,
- <Rule '/admin/entitytype/details/' (HEAD, GET, OPTIONS) -> entitytype.details_view>,
- <Rule '/admin/entitytype/edit/' (HEAD, POST, GET, OPTIONS) -> entitytype.edit_view>,
- <Rule '/admin/entitytype/export/<export_type>/' (HEAD, GET, OPTIONS) -> entitytype.export>,
- <Rule '/admin/entitytype/' (HEAD, GET, OPTIONS) -> entitytype.index_view>,
+ <Rule '/admin/entitytype/details/' (GET, HEAD, OPTIONS) -> entitytype.details_view>,
+ <Rule '/admin/entitytype/edit/' (GET, HEAD, POST, OPTIONS) -> entitytype.edit_view>,
+ <Rule '/admin/entitytype/export/<export_type>/' (GET, HEAD, OPTIONS) -> entitytype.export>,
+ <Rule '/admin/entitytype/' (GET, HEAD, OPTIONS) -> entitytype.index_view>,
  <Rule '/admin/bookmark/action/' (POST, OPTIONS) -> bookmark.action_view>,
- <Rule '/admin/bookmark/ajax/lookup/' (HEAD, GET, OPTIONS) -> bookmark.ajax_lookup>,
+ <Rule '/admin/bookmark/ajax/lookup/' (GET, HEAD, OPTIONS) -> bookmark.ajax_lookup>,
  <Rule '/admin/bookmark/ajax/update/' (POST, OPTIONS) -> bookmark.ajax_update>,
- <Rule '/admin/bookmark/new/' (HEAD, POST, GET, OPTIONS) -> bookmark.create_view>,
+ <Rule '/admin/bookmark/new/' (GET, HEAD, POST, OPTIONS) -> bookmark.create_view>,
  <Rule '/admin/bookmark/delete/' (POST, OPTIONS) -> bookmark.delete_view>,
- <Rule '/admin/bookmark/details/' (HEAD, GET, OPTIONS) -> bookmark.details_view>,
- <Rule '/admin/bookmark/edit/' (HEAD, POST, GET, OPTIONS) -> bookmark.edit_view>,
- <Rule '/admin/bookmark/export/<export_type>/' (HEAD, GET, OPTIONS) -> bookmark.export>,
- <Rule '/admin/bookmark/' (HEAD, GET, OPTIONS) -> bookmark.index_view>]), 'subdomain_matching': False, '_got_first_request': False, 'cli': <AppGroup app>, 'name': 'app', 'handle_exception': <function CORS.init_app.<locals>._after_request_decorator.<locals>.wrapped_function at 0x7f5230fc8af0>, 'handle_user_exception': <function CORS.init_app.<locals>._after_request_decorator.<locals>.wrapped_function at 0x7f5230fc8b80>}
-<built-in method __dir__ of Flask object at 0x7f5232757f10>
+ <Rule '/admin/bookmark/details/' (GET, HEAD, OPTIONS) -> bookmark.details_view>,
+ <Rule '/admin/bookmark/edit/' (GET, HEAD, POST, OPTIONS) -> bookmark.edit_view>,
+ <Rule '/admin/bookmark/export/<export_type>/' (GET, HEAD, OPTIONS) -> bookmark.export>,
+ <Rule '/admin/bookmark/' (GET, HEAD, OPTIONS) -> bookmark.index_view>]), 'subdomain_matching': False, '_got_first_request': False, 'cli': <AppGroup app>, 'name': 'app', 'handle_exception': <function CORS.init_app.<locals>._after_request_decorator.<locals>.wrapped_function at 0x7f7484c7caf0>, 'handle_user_exception': <function CORS.init_app.<locals>._after_request_decorator.<locals>.wrapped_function at 0x7f7484c7cb80>}
+<built-in method __dir__ of Flask object at 0x7f748641bd60>
 The flask object implements a WSGI application and acts as the central
     object.  It is passed the name of the module or package of the
     application.  Once it is created it will act as a central registry for
@@ -288,42 +288,42 @@ The flask object implements a WSGI application and acts as the central
         This should only be set manually when it can't be detected
         automatically, such as for namespace packages.
     
-<method-wrapper '__eq__' of Flask object at 0x7f5232757f10>
-<built-in method __format__ of Flask object at 0x7f5232757f10>
-<method-wrapper '__ge__' of Flask object at 0x7f5232757f10>
-<method-wrapper '__getattribute__' of Flask object at 0x7f5232757f10>
-<method-wrapper '__gt__' of Flask object at 0x7f5232757f10>
-<method-wrapper '__hash__' of Flask object at 0x7f5232757f10>
+<method-wrapper '__eq__' of Flask object at 0x7f748641bd60>
+<built-in method __format__ of Flask object at 0x7f748641bd60>
+<method-wrapper '__ge__' of Flask object at 0x7f748641bd60>
+<method-wrapper '__getattribute__' of Flask object at 0x7f748641bd60>
+<method-wrapper '__gt__' of Flask object at 0x7f748641bd60>
+<method-wrapper '__hash__' of Flask object at 0x7f748641bd60>
 <bound method Flask.__init__ of <Flask 'app'>>
-<built-in method __init_subclass__ of type object at 0x556d1eea3540>
-<method-wrapper '__le__' of Flask object at 0x7f5232757f10>
-<method-wrapper '__lt__' of Flask object at 0x7f5232757f10>
+<built-in method __init_subclass__ of type object at 0x562b2f3b5d60>
+<method-wrapper '__le__' of Flask object at 0x7f748641bd60>
+<method-wrapper '__lt__' of Flask object at 0x7f748641bd60>
 flask.app
-<method-wrapper '__ne__' of Flask object at 0x7f5232757f10>
-<built-in method __new__ of type object at 0x7f52343bad80>
-<built-in method __reduce__ of Flask object at 0x7f5232757f10>
-<built-in method __reduce_ex__ of Flask object at 0x7f5232757f10>
+<method-wrapper '__ne__' of Flask object at 0x7f748641bd60>
+<built-in method __new__ of type object at 0x7f748807ed80>
+<built-in method __reduce__ of Flask object at 0x7f748641bd60>
+<built-in method __reduce_ex__ of Flask object at 0x7f748641bd60>
 <bound method Scaffold.__repr__ of <Flask 'app'>>
-<method-wrapper '__setattr__' of Flask object at 0x7f5232757f10>
-<built-in method __sizeof__ of Flask object at 0x7f5232757f10>
-<method-wrapper '__str__' of Flask object at 0x7f5232757f10>
-<built-in method __subclasshook__ of type object at 0x556d1eea3540>
-<weakref at 0x7f523108e660; to 'Flask' at 0x7f5232757f10>
+<method-wrapper '__setattr__' of Flask object at 0x7f748641bd60>
+<built-in method __sizeof__ of Flask object at 0x7f748641bd60>
+<method-wrapper '__str__' of Flask object at 0x7f748641bd60>
+<built-in method __subclasshook__ of type object at 0x562b2f3b5d60>
+<weakref at 0x7f7484d4e430; to 'Flask' at 0x7f748641bd60>
 <bound method App._check_setup_finished of <Flask 'app'>>
 <bound method App._find_error_handler of <Flask 'app'>>
-<function Scaffold._get_exc_class_and_code at 0x7f5232727f40>
+<function Scaffold._get_exc_class_and_code at 0x7f74863ebf40>
 False
 <bound method Scaffold._method_route of <Flask 'app'>>
 static
 None
-<werkzeug.exceptions.Aborter object at 0x7f5232757c10>
+<werkzeug.exceptions.Aborter object at 0x7f748641bbe0>
 <class 'werkzeug.exceptions.Aborter'>
 <bound method App.add_template_filter of <Flask 'app'>>
 <bound method App.add_template_global of <Flask 'app'>>
 <bound method App.add_template_test of <Flask 'app'>>
 <bound method App.add_url_rule of <Flask 'app'>>
 <bound method Scaffold.after_request of <Flask 'app'>>
-defaultdict(<class 'list'>, {None: [<function make_after_request_function.<locals>.cors_after_request at 0x7f5230f4fd00>]})
+defaultdict(<class 'list'>, {None: [<function make_after_request_function.<locals>.cors_after_request at 0x7f7484c0fd00>]})
 <bound method Flask.app_context of <Flask 'app'>>
 <class 'flask.ctx._AppCtxGlobals'>
 <bound method Flask.async_to_sync of <Flask 'app'>>
@@ -346,27 +346,27 @@ ImmutableDict({'DEBUG': None, 'TESTING': False, 'PROPAGATE_EXCEPTIONS': None, 'S
 <bound method Flask.do_teardown_request of <Flask 'app'>>
 <bound method Scaffold.endpoint of <Flask 'app'>>
 <bound method Flask.ensure_sync of <Flask 'app'>>
-defaultdict(<function Scaffold.__init__.<locals>.<lambda> at 0x7f523279c1f0>, {})
+defaultdict(<function Scaffold.__init__.<locals>.<lambda> at 0x7f74864601f0>, {})
 <bound method Scaffold.errorhandler of <Flask 'app'>>
-{'migrate': <flask_migrate._MigrateConfig object at 0x7f5230f49330>, 'sqlalchemy': <SQLAlchemy>, 'admin': [<flask_admin.base.Admin object at 0x7f5230f49ba0>]}
+{'migrate': <flask_migrate._MigrateConfig object at 0x7f7484c15150>, 'sqlalchemy': <SQLAlchemy>, 'admin': [<flask_admin.base.Admin object at 0x7f7484c159c0>]}
 <bound method Flask.finalize_request of <Flask 'app'>>
 <bound method Flask.full_dispatch_request of <Flask 'app'>>
 <bound method Scaffold.get of <Flask 'app'>>
 <bound method Flask.get_send_file_max_age of <Flask 'app'>>
-<function CORS.init_app.<locals>._after_request_decorator.<locals>.wrapped_function at 0x7f5230fc8af0>
+<function CORS.init_app.<locals>._after_request_decorator.<locals>.wrapped_function at 0x7f7484c7caf0>
 <bound method Flask.handle_http_exception of <Flask 'app'>>
 <bound method App.handle_url_build_error of <Flask 'app'>>
-<function CORS.init_app.<locals>._after_request_decorator.<locals>.wrapped_function at 0x7f5230fc8b80>
+<function CORS.init_app.<locals>._after_request_decorator.<locals>.wrapped_function at 0x7f7484c7cb80>
 True
 app
 <bound method App.inject_url_defaults of <Flask 'app'>>
 /workspaces/flask-rest-hello-sopze/src/instance
 <bound method App.iter_blueprints of <Flask 'app'>>
-<flask.templating.Environment object at 0x7f5230cd4670>
+<flask.templating.Environment object at 0x7f7484990490>
 <class 'flask.templating.Environment'>
-<jinja2.loaders.FileSystemLoader object at 0x7f5230cd6dd0>
+<jinja2.loaders.FileSystemLoader object at 0x7f7484992bf0>
 {}
-<flask.json.provider.DefaultJSONProvider object at 0x7f52314a1060>
+<flask.json.provider.DefaultJSONProvider object at 0x7f7485160e80>
 <class 'flask.json.provider.DefaultJSONProvider'>
 <bound method Flask.log_exception of <Flask 'app'>>
 <Logger app (DEBUG)>
@@ -397,9 +397,9 @@ app
 any key works
 <bound method App.select_jinja_autoescape of <Flask 'app'>>
 <bound method Flask.send_static_file of <Flask 'app'>>
-<flask.sessions.SecureCookieSessionInterface object at 0x7f52327553f0>
+<flask.sessions.SecureCookieSessionInterface object at 0x7f74864193c0>
 <bound method App.shell_context_processor of <Flask 'app'>>
-[<function add_models_to_shell at 0x7f5230f4f7f0>]
+[<function add_models_to_shell at 0x7f7484c0f7f0>]
 <bound method App.should_ignore_error of <Flask 'app'>>
 /workspaces/flask-rest-hello-sopze/src/static
 /static
@@ -408,7 +408,7 @@ False
 [<bound method SQLAlchemy._teardown_session of <SQLAlchemy>>]
 <bound method Scaffold.teardown_request of <Flask 'app'>>
 defaultdict(<class 'list'>, {})
-defaultdict(<class 'list'>, {None: [<function _default_template_ctx_processor at 0x7f52329df9a0>], 'admin': [<function _default_template_ctx_processor at 0x7f52329df9a0>], 'user': [<function _default_template_ctx_processor at 0x7f52329df9a0>], 'entity': [<function _default_template_ctx_processor at 0x7f52329df9a0>], 'entitytype': [<function _default_template_ctx_processor at 0x7f52329df9a0>], 'bookmark': [<function _default_template_ctx_processor at 0x7f52329df9a0>]})
+defaultdict(<class 'list'>, {None: [<function _default_template_ctx_processor at 0x7f74866a39a0>], 'admin': [<function _default_template_ctx_processor at 0x7f74866a39a0>], 'user': [<function _default_template_ctx_processor at 0x7f74866a39a0>], 'entity': [<function _default_template_ctx_processor at 0x7f74866a39a0>], 'entitytype': [<function _default_template_ctx_processor at 0x7f74866a39a0>], 'bookmark': [<function _default_template_ctx_processor at 0x7f74866a39a0>]})
 <bound method App.template_filter of <Flask 'app'>>
 templates
 <bound method App.template_global of <Flask 'app'>>
@@ -425,48 +425,48 @@ False
 defaultdict(<class 'list'>, {})
 <bound method Scaffold.url_defaults of <Flask 'app'>>
 <bound method Flask.url_for of <Flask 'app'>>
-Map([<Rule '/static/<filename>' (HEAD, GET, OPTIONS) -> static>,
- <Rule '/admin/static/<filename>' (HEAD, GET, OPTIONS) -> admin.static>,
- <Rule '/admin/' (HEAD, GET, OPTIONS) -> admin.index>,
+Map([<Rule '/static/<filename>' (GET, HEAD, OPTIONS) -> static>,
+ <Rule '/admin/static/<filename>' (GET, HEAD, OPTIONS) -> admin.static>,
+ <Rule '/admin/' (GET, HEAD, OPTIONS) -> admin.index>,
  <Rule '/admin/user/action/' (POST, OPTIONS) -> user.action_view>,
- <Rule '/admin/user/ajax/lookup/' (HEAD, GET, OPTIONS) -> user.ajax_lookup>,
+ <Rule '/admin/user/ajax/lookup/' (GET, HEAD, OPTIONS) -> user.ajax_lookup>,
  <Rule '/admin/user/ajax/update/' (POST, OPTIONS) -> user.ajax_update>,
- <Rule '/admin/user/new/' (HEAD, POST, GET, OPTIONS) -> user.create_view>,
+ <Rule '/admin/user/new/' (GET, HEAD, POST, OPTIONS) -> user.create_view>,
  <Rule '/admin/user/delete/' (POST, OPTIONS) -> user.delete_view>,
- <Rule '/admin/user/details/' (HEAD, GET, OPTIONS) -> user.details_view>,
- <Rule '/admin/user/edit/' (HEAD, POST, GET, OPTIONS) -> user.edit_view>,
- <Rule '/admin/user/export/<export_type>/' (HEAD, GET, OPTIONS) -> user.export>,
- <Rule '/admin/user/' (HEAD, GET, OPTIONS) -> user.index_view>,
+ <Rule '/admin/user/details/' (GET, HEAD, OPTIONS) -> user.details_view>,
+ <Rule '/admin/user/edit/' (GET, HEAD, POST, OPTIONS) -> user.edit_view>,
+ <Rule '/admin/user/export/<export_type>/' (GET, HEAD, OPTIONS) -> user.export>,
+ <Rule '/admin/user/' (GET, HEAD, OPTIONS) -> user.index_view>,
  <Rule '/admin/entity/action/' (POST, OPTIONS) -> entity.action_view>,
- <Rule '/admin/entity/ajax/lookup/' (HEAD, GET, OPTIONS) -> entity.ajax_lookup>,
+ <Rule '/admin/entity/ajax/lookup/' (GET, HEAD, OPTIONS) -> entity.ajax_lookup>,
  <Rule '/admin/entity/ajax/update/' (POST, OPTIONS) -> entity.ajax_update>,
- <Rule '/admin/entity/new/' (HEAD, POST, GET, OPTIONS) -> entity.create_view>,
+ <Rule '/admin/entity/new/' (GET, HEAD, POST, OPTIONS) -> entity.create_view>,
  <Rule '/admin/entity/delete/' (POST, OPTIONS) -> entity.delete_view>,
- <Rule '/admin/entity/details/' (HEAD, GET, OPTIONS) -> entity.details_view>,
- <Rule '/admin/entity/edit/' (HEAD, POST, GET, OPTIONS) -> entity.edit_view>,
- <Rule '/admin/entity/export/<export_type>/' (HEAD, GET, OPTIONS) -> entity.export>,
- <Rule '/admin/entity/' (HEAD, GET, OPTIONS) -> entity.index_view>,
+ <Rule '/admin/entity/details/' (GET, HEAD, OPTIONS) -> entity.details_view>,
+ <Rule '/admin/entity/edit/' (GET, HEAD, POST, OPTIONS) -> entity.edit_view>,
+ <Rule '/admin/entity/export/<export_type>/' (GET, HEAD, OPTIONS) -> entity.export>,
+ <Rule '/admin/entity/' (GET, HEAD, OPTIONS) -> entity.index_view>,
  <Rule '/admin/entitytype/action/' (POST, OPTIONS) -> entitytype.action_view>,
- <Rule '/admin/entitytype/ajax/lookup/' (HEAD, GET, OPTIONS) -> entitytype.ajax_lookup>,
+ <Rule '/admin/entitytype/ajax/lookup/' (GET, HEAD, OPTIONS) -> entitytype.ajax_lookup>,
  <Rule '/admin/entitytype/ajax/update/' (POST, OPTIONS) -> entitytype.ajax_update>,
- <Rule '/admin/entitytype/new/' (HEAD, POST, GET, OPTIONS) -> entitytype.create_view>,
+ <Rule '/admin/entitytype/new/' (GET, HEAD, POST, OPTIONS) -> entitytype.create_view>,
  <Rule '/admin/entitytype/delete/' (POST, OPTIONS) -> entitytype.delete_view>,
- <Rule '/admin/entitytype/details/' (HEAD, GET, OPTIONS) -> entitytype.details_view>,
- <Rule '/admin/entitytype/edit/' (HEAD, POST, GET, OPTIONS) -> entitytype.edit_view>,
- <Rule '/admin/entitytype/export/<export_type>/' (HEAD, GET, OPTIONS) -> entitytype.export>,
- <Rule '/admin/entitytype/' (HEAD, GET, OPTIONS) -> entitytype.index_view>,
+ <Rule '/admin/entitytype/details/' (GET, HEAD, OPTIONS) -> entitytype.details_view>,
+ <Rule '/admin/entitytype/edit/' (GET, HEAD, POST, OPTIONS) -> entitytype.edit_view>,
+ <Rule '/admin/entitytype/export/<export_type>/' (GET, HEAD, OPTIONS) -> entitytype.export>,
+ <Rule '/admin/entitytype/' (GET, HEAD, OPTIONS) -> entitytype.index_view>,
  <Rule '/admin/bookmark/action/' (POST, OPTIONS) -> bookmark.action_view>,
- <Rule '/admin/bookmark/ajax/lookup/' (HEAD, GET, OPTIONS) -> bookmark.ajax_lookup>,
+ <Rule '/admin/bookmark/ajax/lookup/' (GET, HEAD, OPTIONS) -> bookmark.ajax_lookup>,
  <Rule '/admin/bookmark/ajax/update/' (POST, OPTIONS) -> bookmark.ajax_update>,
- <Rule '/admin/bookmark/new/' (HEAD, POST, GET, OPTIONS) -> bookmark.create_view>,
+ <Rule '/admin/bookmark/new/' (GET, HEAD, POST, OPTIONS) -> bookmark.create_view>,
  <Rule '/admin/bookmark/delete/' (POST, OPTIONS) -> bookmark.delete_view>,
- <Rule '/admin/bookmark/details/' (HEAD, GET, OPTIONS) -> bookmark.details_view>,
- <Rule '/admin/bookmark/edit/' (HEAD, POST, GET, OPTIONS) -> bookmark.edit_view>,
- <Rule '/admin/bookmark/export/<export_type>/' (HEAD, GET, OPTIONS) -> bookmark.export>,
- <Rule '/admin/bookmark/' (HEAD, GET, OPTIONS) -> bookmark.index_view>])
+ <Rule '/admin/bookmark/details/' (GET, HEAD, OPTIONS) -> bookmark.details_view>,
+ <Rule '/admin/bookmark/edit/' (GET, HEAD, POST, OPTIONS) -> bookmark.edit_view>,
+ <Rule '/admin/bookmark/export/<export_type>/' (GET, HEAD, OPTIONS) -> bookmark.export>,
+ <Rule '/admin/bookmark/' (GET, HEAD, OPTIONS) -> bookmark.index_view>])
 <class 'werkzeug.routing.map.Map'>
 <class 'werkzeug.routing.rules.Rule'>
 <bound method Scaffold.url_value_preprocessor of <Flask 'app'>>
 defaultdict(<class 'list'>, {})
-{'static': <function Flask.__init__.<locals>.<lambda> at 0x7f52314939a0>, 'admin.static': <bound method Blueprint.send_static_file of <Blueprint 'admin'>>, 'admin.index': <bound method AdminIndexView.index of <flask_admin.base.AdminIndexView object at 0x7f5230f4ba00>>, 'user.action_view': <bound method BaseModelView.action_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230fcc4c0>>, 'user.ajax_lookup': <bound method BaseModelView.ajax_lookup of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230fcc4c0>>, 'user.ajax_update': <bound method BaseModelView.ajax_update of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230fcc4c0>>, 'user.create_view': <bound method BaseModelView.create_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230fcc4c0>>, 'user.delete_view': <bound method BaseModelView.delete_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230fcc4c0>>, 'user.details_view': <bound method BaseModelView.details_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230fcc4c0>>, 'user.edit_view': <bound method BaseModelView.edit_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230fcc4c0>>, 'user.export': <bound method BaseModelView.export of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230fcc4c0>>, 'user.index_view': <bound method BaseModelView.index_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230fcc4c0>>, 'entity.action_view': <bound method BaseModelView.action_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230fcebf0>>, 'entity.ajax_lookup': <bound method BaseModelView.ajax_lookup of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230fcebf0>>, 'entity.ajax_update': <bound method BaseModelView.ajax_update of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230fcebf0>>, 'entity.create_view': <bound method BaseModelView.create_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230fcebf0>>, 'entity.delete_view': <bound method BaseModelView.delete_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230fcebf0>>, 'entity.details_view': <bound method BaseModelView.details_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230fcebf0>>, 'entity.edit_view': <bound method BaseModelView.edit_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230fcebf0>>, 'entity.export': <bound method BaseModelView.export of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230fcebf0>>, 'entity.index_view': <bound method BaseModelView.index_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230fcebf0>>, 'entitytype.action_view': <bound method BaseModelView.action_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230fbb760>>, 'entitytype.ajax_lookup': <bound method BaseModelView.ajax_lookup of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230fbb760>>, 'entitytype.ajax_update': <bound method BaseModelView.ajax_update of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230fbb760>>, 'entitytype.create_view': <bound method BaseModelView.create_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230fbb760>>, 'entitytype.delete_view': <bound method BaseModelView.delete_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230fbb760>>, 'entitytype.details_view': <bound method BaseModelView.details_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230fbb760>>, 'entitytype.edit_view': <bound method BaseModelView.edit_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230fbb760>>, 'entitytype.export': <bound method BaseModelView.export of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230fbb760>>, 'entitytype.index_view': <bound method BaseModelView.index_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230fbb760>>, 'bookmark.action_view': <bound method BaseModelView.action_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230cb4d00>>, 'bookmark.ajax_lookup': <bound method BaseModelView.ajax_lookup of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230cb4d00>>, 'bookmark.ajax_update': <bound method BaseModelView.ajax_update of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230cb4d00>>, 'bookmark.create_view': <bound method BaseModelView.create_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230cb4d00>>, 'bookmark.delete_view': <bound method BaseModelView.delete_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230cb4d00>>, 'bookmark.details_view': <bound method BaseModelView.details_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230cb4d00>>, 'bookmark.edit_view': <bound method BaseModelView.edit_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230cb4d00>>, 'bookmark.export': <bound method BaseModelView.export of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230cb4d00>>, 'bookmark.index_view': <bound method BaseModelView.index_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f5230cb4d00>>}
+{'static': <function Flask.__init__.<locals>.<lambda> at 0x7f74851539a0>, 'admin.static': <bound method Blueprint.send_static_file of <Blueprint 'admin'>>, 'admin.index': <bound method AdminIndexView.index of <flask_admin.base.AdminIndexView object at 0x7f7484c17820>>, 'user.action_view': <bound method BaseModelView.action_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484c844c0>>, 'user.ajax_lookup': <bound method BaseModelView.ajax_lookup of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484c844c0>>, 'user.ajax_update': <bound method BaseModelView.ajax_update of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484c844c0>>, 'user.create_view': <bound method BaseModelView.create_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484c844c0>>, 'user.delete_view': <bound method BaseModelView.delete_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484c844c0>>, 'user.details_view': <bound method BaseModelView.details_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484c844c0>>, 'user.edit_view': <bound method BaseModelView.edit_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484c844c0>>, 'user.export': <bound method BaseModelView.export of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484c844c0>>, 'user.index_view': <bound method BaseModelView.index_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484c844c0>>, 'entity.action_view': <bound method BaseModelView.action_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484c86a10>>, 'entity.ajax_lookup': <bound method BaseModelView.ajax_lookup of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484c86a10>>, 'entity.ajax_update': <bound method BaseModelView.ajax_update of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484c86a10>>, 'entity.create_view': <bound method BaseModelView.create_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484c86a10>>, 'entity.delete_view': <bound method BaseModelView.delete_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484c86a10>>, 'entity.details_view': <bound method BaseModelView.details_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484c86a10>>, 'entity.edit_view': <bound method BaseModelView.edit_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484c86a10>>, 'entity.export': <bound method BaseModelView.export of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484c86a10>>, 'entity.index_view': <bound method BaseModelView.index_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484c86a10>>, 'entitytype.action_view': <bound method BaseModelView.action_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484c77760>>, 'entitytype.ajax_lookup': <bound method BaseModelView.ajax_lookup of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484c77760>>, 'entitytype.ajax_update': <bound method BaseModelView.ajax_update of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484c77760>>, 'entitytype.create_view': <bound method BaseModelView.create_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484c77760>>, 'entitytype.delete_view': <bound method BaseModelView.delete_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484c77760>>, 'entitytype.details_view': <bound method BaseModelView.details_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484c77760>>, 'entitytype.edit_view': <bound method BaseModelView.edit_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484c77760>>, 'entitytype.export': <bound method BaseModelView.export of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484c77760>>, 'entitytype.index_view': <bound method BaseModelView.index_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484c77760>>, 'bookmark.action_view': <bound method BaseModelView.action_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484974b20>>, 'bookmark.ajax_lookup': <bound method BaseModelView.ajax_lookup of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484974b20>>, 'bookmark.ajax_update': <bound method BaseModelView.ajax_update of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484974b20>>, 'bookmark.create_view': <bound method BaseModelView.create_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484974b20>>, 'bookmark.delete_view': <bound method BaseModelView.delete_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484974b20>>, 'bookmark.details_view': <bound method BaseModelView.details_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484974b20>>, 'bookmark.edit_view': <bound method BaseModelView.edit_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484974b20>>, 'bookmark.export': <bound method BaseModelView.export of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484974b20>>, 'bookmark.index_view': <bound method BaseModelView.index_view of <flask_admin.contrib.sqla.view.ModelView object at 0x7f7484974b20>>}
 <bound method Flask.wsgi_app of <Flask 'app'>>
