@@ -1,7 +1,8 @@
 <html>
     <head>
+        <link href="/admin/static/bootstrap/bootstrap3/swatch/%SWATCH%/bootstrap.min.css?v=3.3.5" rel="stylesheet">
         <style>
-            {css}
+            %CSS%
         </style>
     </head>
     <body>
@@ -10,23 +11,30 @@
             <h2 class="title"><span class="old">Rigo</span> <span class="new">Doomguy</span> welcomes you to your API!!</h2>
             <p class="subtitle">(he finally killed rigo baby)</p>
             <script>document.write('<input class="location" type="text" value="'+window.location.href+'" />');</script>
-            <section>
-                {admin_link}
-                <h4>IMPORTANT: Use <b>'/db/reset'</b> first to fill the database with premade data!</h4>
-            </section>
-            <div class="flex">
-                <section>
-                    <h2>Endpoints:</h2>
-                    <ul>
-                        {endpoint_link}
-                    </ul>
-                </section>
-                <section>
-                    <h2>More endpoints:</h2>
-                    <ul>
-                        {endpoint_span}
-                    </ul>
-                </section>
+            %ADMIN_LINK%
+            <div class="flex flex-a">
+                <div class="flex flex-b">
+                    <section class="public">
+                        <h4>Public Endpoints</h4>
+                        <div class="list">
+                            %ENDPOINT_LINK%
+                        </div>
+                    </section>
+                    <section class="private">
+                        <h4>"Private" Endpoints</h4>
+                        <div class="list">
+                            %ENDPOINT_SPAN%
+                        </div>
+                    </section>
+                </div>
+                <div class="flex flex-c">
+                    <section class="tools">
+                        <h4>Developer Tools</h4>
+                        <div class="list">
+                            %TOOL_LIST%
+                        </div>
+                    </section>
+                </div>
             </div>
         </div>
     </body>
