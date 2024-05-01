@@ -8,12 +8,12 @@
 	"customizations": {
 		"vscode": {
 			"settings": {
-				"editor.defaultFormatter": "esbenp.prettier-vscode",
+				//"editor.defaultFormatter": "esbenp.prettier-vscode",
 				"workbench.editorAssociations": {   
 					"*.md": "vscode.markdown.preview.editor"
 				}
 			},
-			"extensions": [ "esbenp.prettier-vscode", "MS-vsliveshare.vsliveshare" ]
+			//"extensions": [ "esbenp.prettier-vscode", "MS-vsliveshare.vsliveshare" ]
 		}
 	},
 
@@ -24,10 +24,10 @@
 	// This can be used to network with other containers or the host.
 	"forwardPorts": [5432, 3000],
 
-	"onCreateCommand": "cp -n .env.example .env && pipenv install",
+	"onCreateCommand": "cp -n .env.swapi .env && pipenv install",
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "pipenv install && bash database.sh && python docs/assets/welcome.py",
+	"postCreateCommand": "pipenv install",
 
 	// Configure tool-specific properties.
 	// "customizations": {},

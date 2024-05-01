@@ -25,7 +25,7 @@ services:
       - postgres-data:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: gitpod
-      POSTGRES_DB: example
+      POSTGRES_DB: swapi
       POSTGRES_PASSWORD: postgres
 
     # Add "forwardPorts": ["5432"] to **devcontainer.json** to forward PostgreSQL locally.
