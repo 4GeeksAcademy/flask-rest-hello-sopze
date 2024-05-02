@@ -107,6 +107,8 @@ p:has(.admin) { margin-inline: 5%; padding: 8px }
 .method-put { color: #48f }
 .method-post { color: #ff4 }
 .method-delete { color: #f44 }
+.tool-nope { color: #888; text-decoration: line-through solid #aa3333 2px !important; }
+.tool-db { color: #f56a6a }
 .tool-user { color: #89deec }
 .tool-type { color: #e5c59b }
 .tool-entity { color: #cbee92 }

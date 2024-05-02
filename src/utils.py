@@ -44,7 +44,7 @@ def _get_method(methods):
         return "PUT"
     return "GET"
 
-def generate_sitemap(app):
+def generate_sitemap(app, entitytypes=None):
     admin_raw_link= '/admin/'
     endpoint_raw_link= []
     endpoint_raw_span= []
@@ -68,6 +68,9 @@ def generate_sitemap(app):
     endpoint_link = "".join([f"<li><div class=\"method method-{y[0].lower()}\">{y[0]}</div><a class=\"apilink-{y[2]}\" href=\"{y[1]}\">{y[1]}</a></li>" for y in endpoint_raw_link])
     endpoint_span = "".join([f"<li><div class=\"method method-{y[0].lower()}\">{y[0]}</div>{y[1]}</li>" for y in endpoint_raw_span])
     tool_list = "".join([f"<li>{t}</li>" for t in tools.generate_html_links()])
+
+    if entitytypes:
+        endpoint_link+= "".join([f"<li><div class=\"method method-get\">GET</div><a class=\"apilink-api\" href=\"{l}\">{l}</a></li>" for l in entitytypes])
 
     html= open("res/index.html",'r').read()
     css= open("res/styles.css",'r').read()

@@ -1,18 +1,18 @@
 {
   "user": [
-    ["defaultuser", "default@email.com", "1234"],
-    ["teapot", "teapot@jemail.com", "imateapot1998"],
-    ["elmandangas", "mandangas69hotpenis@jemail.com", "5678"],
-    ["almejitafresca", "michochorechulon@email.com", "abcd"],
-    ["sopze", "sergiosopze@4geeks.com", "4geeks"]
+    ["defaultuser", "The Default User", "default@email.com", "1234"],
+    ["teapot", "Master Teapot", "teapot@jemail.com", "imateapot1998"],
+    ["elmandangas", "Mandanguita69", "mandangas69hotpenis@jemail.com", "5678"],
+    ["almejitafresca", "Fresquimeja", "michochorechulon@email.com", "abcd"],
+    ["sopze", "Sopze92", "sergiosopze@4geeks.com", "4geeks"]
   ],
   "entity_type": [
-    ["film", "episode_id:int|director|producer|release_date|opening_crawl|characters:int[]|planets:int[]|species:int[]|starships:int[]|vehicles:int[]" ],
-    ["people", "height|mass|hair_color|skin_color|eye_color|birth_year|gender|homeword:int"],
-    ["planet", "diameter|rotation_period|orbital_period|gravity|population|climate|terrain|surface_water"],
-    ["species", "classification|designation|average_height|average_lifespan|hair_colors|skin_colors|eye_colors|homeword:int|language|people:int[]|"],
-    ["starship", "model|starship_class|manufacturer|cost_in_credits|length|crew|passengers|max_atmosphering_speed|hyperdrive_rating|MGLT|cargo_capacity|consumables|pilots:int[]"],
-    ["vehicle", "model|vehicle_class|manufacturer|cost_in_credits|length|crew|passengers|max_atmosphering_speed|cargo_capacity|consumables|films:int[]|pilots:int[]"]
+    ["film", "films", "episode_id:int|director|producer|release_date|opening_crawl|characters:int[]|planets:int[]|species:int[]|starships:int[]|vehicles:int[]" ],
+    ["people", "people", "height|mass|hair_color|skin_color|eye_color|birth_year|gender|homeword:int"],
+    ["planet", "planets", "diameter|rotation_period|orbital_period|gravity|population|climate|terrain|surface_water"],
+    ["species", "species", "classification|designation|average_height|average_lifespan|hair_colors|skin_colors|eye_colors|homeword:int|language|people:int[]"],
+    ["starship", "starships", "model|starship_class|manufacturer|cost_in_credits|length|crew|passengers|max_atmosphering_speed|hyperdrive_rating|MGLT|cargo_capacity|consumables|pilots:int[]"],
+    ["vehicle", "vehicles", "model|vehicle_class|manufacturer|cost_in_credits|length|crew|passengers|max_atmosphering_speed|cargo_capacity|consumables|films:int[]|pilots:int[]"]
   ],
   "entity": [
     [

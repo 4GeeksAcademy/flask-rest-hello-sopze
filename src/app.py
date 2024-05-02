@@ -1,36 +1,23 @@
 """
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
-import os, json
-from flask import Flask, request, jsonify, url_for
+import os, signal, db_utils, tools, json
+from flask import Flask, request, jsonify
 from flask_migrate import Migrate
 from flask_swagger import swagger
 from flask_cors import CORS
 from utils import APIException, generate_sitemap
 from admin import setup_admin
-from models import db, User, Entity, EntityType, Bookmark
 
-#
-#   IMPORTANT NOTES
-# Run 'pipenv run upgrade' everytime Codespaces start to create the database
-# then use the /db/reset endpoint to fill the database with premade values I manually wrote
-#
-# NEVER use /db/wipe, that will drop all the tables, I used it internally in the upgrade process of my db
-#
-# migrate->upgrade was failing every time (flask sqlalchemy doesnt seem to support ALTER nicely) 
-# found a solution by:
-#   use /db/wipe then stop server
-#   remove 'migrations' folder
-#   pipenv run init then pipenv run upgrade
-#   pipenv run migrate then pipenv run upgrade (again, the first initializes, this one actually creates the models)
-#   enjoy your new database
-#
-# *the wipe is needed to erase the db as we cant access its data directly (its in Codespaces internal storage)
-#
+from models import db, User, Entity, EntityType, Bookmark # only 4 needed
+import db_utils # didnt imported * from there because this way calls are d_utils.#func# in code so you know where they're implemented
+
+### ----------------------------------------------------------------------------------------------- ###
+### ---------------------------------------- INITIALIZATION --------------------------------------- ###
+### ----------------------------------------------------------------------------------------------- ###
 
 app = Flask(__name__)
 app.url_map.strict_slashes = False
-
 app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:////tmp/swapi.db"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -39,132 +26,35 @@ db.init_app(app)
 CORS(app)
 setup_admin(app)
 
-__CONTENT_TYPE= {'Content-Type': 'application/json'}
+db.__ENTITYTYPEMAPS__= {}
 
-def _response(status, message, data=None):
-    return jsonify({ "message": message, "result":data } if not data == None else { "message": message }), status, __CONTENT_TYPE
-
-def _response_200(data=None):
-    return _response(200, "ok", data)
-
-def _response_400(data=None):
-    return _response(400, "BAD REQUEST", data)
-
-def _response_500(data=None):
-    return _response(500, "SERVER ERROR", data)
-
-# dict to track entity type names to its ids, define it on app instance
-app.entity_type_nametoid= {}
-
-def _get_entity_type_id(name):
-    return app.entity_type_nametoid[name]
-
-def _register_entity_type(name, id):
-    app.entity_type_nametoid[name]= id
-
-def _clear_entity_type_registry():
-    app.entity_type_nametoid= {}
+### ----------------------------------------------------------------------------------------------- ###
+### ------------------------------------------- GENERAL ------------------------------------------- ###
+### ----------------------------------------------------------------------------------------------- ###
 
 # api error handling
 @app.errorhandler(APIException)
-def handle_invalid_usage(error):
-    return jsonify(error.to_dict()), error.status_code
+def handle_invalid_usage(error): return jsonify(error.to_dict()), error.status_code
 
-# generate sitemap with all your endpoints
+# ---------------------------------------------------------------------------- ENDPOINT: /
+# generate index page
 @app.route('/')
-def sitemap():
+def sitemap(): 
+    rawnames= db.__ENTITYTYPEMAPS__['link2type'].keys() if db.__ENTITYTYPEMAPS__['link2type'] else None
+    if rawnames:
+        filterlinks= [f"/api/entity/{n}" for n in rawnames]
+        return generate_sitemap(app, filterlinks)
     return generate_sitemap(app)
 
-# destroys the entire database, also drops ALL tables
-@app.route('/db/wipe', methods=['GET'])
-def database_wipe():
-    try:
-        db.reflect()
-        db.drop_all()
-        db.session.commit()
-    except:
-        return _response(500, "couldn't wipe")
-    return _response_200()
-
-# print all tables in an ugly string, used to debug
-@app.route('/db/print', methods=['GET'])
-def database_print():
-    print(db.metadata.tables)
-    return _response_200()
-
-# this is just for not having to manually create them each time the codespace starts
-# also called when pipenv run start if db is empty
-@app.route('/db/reset', methods=['GET'])
-def database_reset():
-    try:
-        # clear all data
-        _clear_entity_type_registry()
-        for table in db.metadata.sorted_tables:
-            db.session.execute(table.delete())
-
-        # load defaults from json file
-        json_data= json.load(open("data/defaults.json","r"))
-
-        # entity types first as they need to be commited (we do need their autogenerated _id later)
-        for entity_type in json_data["entity_type"]:
-            instance= EntityType(name=entity_type)
-            db.session.add(instance)
-
-        db.session.commit()
-
-        for db_entity_type in EntityType.query.all():
-            _register_entity_type(db_entity_type.name, db_entity_type._id)
-
-        # users
-        for user_data in json_data["user"]:
-            db.session.add(
-                User(
-                    username=user_data[0],
-                    email=user_data[1],
-                    password=user_data[2]
-                )
-            )
-
-        # entities
-        for entity_data in json_data["entity"]:
-            instance= Entity(
-                type_id= _get_entity_type_id(entity_data[0]),
-                name= entity_data[1],
-                description= entity_data[2],
-                properties= json.dumps(entity_data[3]) # dump properties to json string
-            )
-            db.session.add(instance)
-        db.session.commit()
-    except:
-        return _response_500("couldn't reset")
-    return _response_200()
-
-
-### -------------------------------- USERS -------------------------------- ###
-
-@app.route('/dev/users', methods=['GET'])
-def user_getall():
-    try:
-        query= User.query.all()
-        if not query:
-            return _response_200("no registered users")
-        return _response_200([e.serialize() for e in query])
-    except:
-        return _response_500()
-
-@app.route('/dev/user/<int:id>', methods=['GET'])
-def user_get(id):
-    try:
-        user= User.query.get(id)
-        if not user:
-            return _response(404, f"no such user with id: {id}")
-        if user.username == "teapot":
-            return _response(418, "i'm a teapot", user.serialize())
-        return _response_200(user.serialize())
-    except:
-        return _response_500()
+# ---------------------------------------------------------------------------- ENDPOINT: /dev/test
+@app.route('/dev/test', methods=['GET'])
+def api_code_test():
+    txt="dev endpoint i used to test several things"
+    print(txt)
+    return db_utils.response(418, "I'm a teapot", txt)
 
 # get API endpoints for each type
+# ---------------------------------------------------------------------------- ENDPOINT: /api
 @app.route('/api', methods=['GET'])
 def apimap():
     result= {
@@ -175,96 +65,279 @@ def apimap():
         "starships": f"/api/entity/starships", 
         "vehicles": f"/api/entity/vehicles"
     }
-    return _response_200(result)
+    return db_utils.response_200(result)
 
-### -------------------------------- ENTITY TYPES -------------------------------- ###
+### ----------------------------------------------------------------------------------------------- ###
+### -------------------------------------------- USERS -------------------------------------------- ###
+### ----------------------------------------------------------------------------------------------- ###
 
+# ---------------------------------------------------------------------------- ENDPOINT: /dev/user
+# get all user
+# different route to denote this wouldn't be part of the public api
+@app.route('/dev/user', methods=['GET'])
+def user_getall():
+    try:
+        query= User.query.all()
+        if not query:
+            return db_utils.response(200, "no registered users")
+        return db_utils.response_200([e.serialize() for e in query])
+    except Exception as e:
+        return db_utils.response_500(e.__repr__())
+
+# ---------------------------------------------------------------------------- ENDPOINT: /api/user/<int:id>
+# get user by username
+@app.route('/api/user/<name>', methods=['GET'])
+def user_get(name):
+    try:
+        result= User.query.filter_by(username=name).first()
+        if not result:
+            return db_utils.response(404, f"no such user with name: {name}")
+        if result.username == "teapot":
+            return db_utils.response(418, "i'm a teapot", result.serialize())
+        return db_utils.response_200(result.serialize())
+    except Exception as e:
+        return db_utils.response_500(e.__repr__())
+
+# ---------------------------------------------------------------------------- ENDPOINT: /api/user POST
+# create new user
+@app.route('/api/user', methods=['POST'])
+def user_post():
+    try:
+        valid, data= db_utils.check_valid_json_body(request)
+        if not valid: return data
+        error= db_utils.check_missing_properties(data, db.__metacolumns__['users'])
+        if error: return db_utils.response(400, f"Missing required property '{error}'")
+        newuser= User(
+            username=data['username'],
+            displayname=data['displayname'],
+            email=data['email'],
+            password=data['password']
+        )
+        if User.query.filter_by(email=newuser.email).first(): return db_utils.response(400, "email already registered")
+        elif User.query.filter_by(username=newuser.username).first(): return db_utils.response(400, "username already taken")
+        else:
+            db.session.add(newuser)
+            db.session.commit()
+            db_utils.refresh_entity_type_registry()
+            return db_utils.response_200()
+    except Exception as e:
+        return db_utils.response_500(e.__repr__())
+
+### ----------------------------------------------------------------------------------------------- ###
+### ---------------------------------------- ENTITIY TYPES ---------------------------------------- ###
+### ----------------------------------------------------------------------------------------------- ###
+
+# ---------------------------------------------------------------------------- ENDPOINT: /api/entitytype
+# get all entitytype
 @app.route('/api/entitytype', methods=['GET'])
 def entitytype_getall():
-    result= EntityType.query.all()
-    if not result:
-        return jsonify({ "message": f"no registered entity types" }), 200, __CONTENT_TYPE
-    return jsonify({"message":"ok", "result":[e.serialize() for e in result]}), 200, __CONTENT_TYPE
-
-@app.route('/api/entitytype/<int:id>', methods=['GET'])
-def entitytype_get(id):
     try:
-        result= EntityType.query.get(id)
+        result= EntityType.query.all()
         if not result:
-            return jsonify({ "message": f"no such entity type with id: {id}" }), 404, __CONTENT_TYPE
-        return jsonify({"message":"ok", "result":result.serialize()}), 200, __CONTENT_TYPE
-    except:
-        return _response_500()
+            return db_utils.response(200, "no registered entity types")
+        return db_utils.response_200([e.serialize() for e in result])
+    except Exception as e:
+        return db_utils.response_500(e.__repr__())
 
-### -------------------------------- ENTITIES -------------------------------- ###
-
-# get all entities of given type
-def typedentity_getall(typename):
-    #try:
-        type_id= _get_entity_type_id(typename)
-        if not type_id:
-            return jsonify({ "message": f"no such entity type '{typename}'" }), 404, __CONTENT_TYPE
-        result= Entity.query.filter(Entity.type_id==type_id).all()
-        if not result:
-            return jsonify({ "message": f"no entities registered of type '{typename}'" }), 404, __CONTENT_TYPE
-        return jsonify({"message":"ok", "result":[e.serialize() for e in result]}), 200, __CONTENT_TYPE
-    #except:
-    #    return __RESPONSE_500
-
-# get entity of given type and id
-def typedentity_get(typename, id):
+# ---------------------------------------------------------------------------- ENDPOINT: /api/entitytype/<int:id>
+# get entitytype by _id or name
+@app.route('/api/entitytype/<param>', methods=['GET'])
+def entitytype_get(param):
     try:
-        type_id= _get_entity_type_id(typename)
-        if not type_id:
-            return _response(404, f"no such entity type '{typename}'")
-        result= Entity.query.filter(Entity.type_id==type_id).get(Entity._tid==id)
+        result= EntityType.query.get(int(param)) if param.isdigit() else EntityType.query.filter_by(name=param).first()
         if not result:
-            return _response(404, f"no such entity '{typename}' with id: {id}")
-        return _response_200(result.serialize())
-    except:
-        return _response_500()
+            return db_utils.response(404, f"no such entity type with id/name: {param}")
+        return db_utils.response_200(result.serialize())
+    except Exception as e:
+        return db_utils.response_500(e.__repr__())
 
-# ---------------------------------------------------- ENDPOINT: /api/entity
+# ---------------------------------------------------------------------------- ENDPOINT: /api/entitytype POST
+# create new entitytype
+@app.route('/api/entitytype', methods=['POST'])
+def entitytype_post():
+    try:
+        valid, data= db_utils.check_valid_json_body(request)
+        if not valid: return data
+        error= db_utils.check_missing_properties(data, db.__metacolumns__['entity_types'])
+        if error: return db_utils.response(400, f"Missing required property '{error}'")
+        newtype= EntityType(
+            name=data['name'],
+            link=data['link'] if 'link' in data else None,
+            properties=data['properties']
+        )
+        if EntityType.query.filter_by(link=newtype.link).first(): return db_utils.response(400, "link is already in use")
+        elif EntityType.query.filter_by(name=newtype.name).first(): return db_utils.response(400, "type name already registered")
+        else: 
+            db.session.add(newtype)
+            db.session.commit()
+            db_utils.refresh_entity_type_registry()
+        return db_utils.response_200()
+    except Exception as e:
+        return db_utils.response_500(e.__repr__())
+
+### ----------------------------------------------------------------------------------------------- ###
+### ------------------------------------------- ENTITIES ------------------------------------------ ###
+### ----------------------------------------------------------------------------------------------- ###
+
+# ---------------------------------------------------------------------------- ENDPOINT: /api/entity
 # get all entities
 @app.route('/api/entity', methods=['GET'])
 def entity_getall():
     try:
         result= Entity.query.all()
         if not result:
-            return _response(200, "no registered entities")
-        return _response_200([e.serialize() for e in result])
-    except:
-        return _response_500()
+            return db_utils.response(200, "no registered entities")
+        return db_utils.response_200([e.serialize() for e in result])
+    except Exception as e:
+        return db_utils.response_500(e.__repr__())
 
+# ---------------------------------------------------------------------------- ENDPOINT: /api/entity  POST
+# create new entities
+@app.route('/api/entity', methods=['POST'])
+def entity_post():
+    try:
+        valid, data= db_utils.check_valid_json_body(request)
+        if not valid: return data
+        error= db_utils.check_missing_properties(data, db.__metacolumns__['entities'], exceptions=["type_id"], additions=["type"])
+        if error: return db_utils.response(400, f"Missing required property '{error}'")
+        if not data['type'] in db.__ENTITYTYPEMAPS__['type2id']: return db_utils.response(400, "invalid entity type")
+        newentity= Entity(
+            name=data['name'],
+            description= data['description'] if 'description' in data else "",
+            type_id= db.__ENTITYTYPEMAPS__['type2id'][data['type']],
+            properties= json.dumps(data['properties']) # dump properties to json string
+        )
+        if Entity.query.filter_by(name=newentity.name).first(): return db_utils.response(400, "entity name is already in use")
+        else: 
+            db.session.add(newentity)
+            db.session.commit()
+            db_utils.refresh_entity_type_registry()
+        return db_utils.response_200()
+    except Exception as e:
+        return db_utils.response_500(e.__repr__())
+
+# -------------------------------------------------- HELPERS
+# get all entities of given type
+def typedentity_getall(typename):
+    try:
+        _type_id= db.__ENTITYTYPEMAPS__["type2id"][typename]
+        if not _type_id:
+            return db_utils.response(404, f"no such entity type '{typename}'")
+        result= Entity.query.filter_by(type_id=_type_id).all()
+        if not result:
+            return db_utils.response(404, f"no entities registered of type '{typename}")
+        return db_utils.response_200([e.serialize() for e in result])
+    except Exception as e:
+        return db_utils.response_500(e.__repr__())
+
+# get entity of given type and _tid
+def typedentity_get(typename, tid):
+    try:
+        _type_id= db.__ENTITYTYPEMAPS__["type2id"][typename]
+        if not _type_id:
+            return db_utils.response(404, f"no such entity type '{typename}'")
+        result= Entity.query.filter_by(type_id=_type_id,_tid=tid).first()
+        if not result:
+            return db_utils.response(404, f"no such entity '{typename}' with id: {tid}")
+        return db_utils.response_200(result.serialize())
+    except Exception as e:
+        return db_utils.response_500(e.__repr__())
+
+# ---------------------------------------------------------------------------- ENDPOINT: /api/entity/<type>
 # get all entities of type 
-# ---------------------------------------------------- ENDPOINT: /api/entity/<type>
 @app.route('/api/entity/<type>', methods=['GET'])
 def entity_getall_type(type):
-    return typedentity_getall(type)
+    try:
+        link= db.__ENTITYTYPEMAPS__["link2type"][type]
+    except:
+        return db_utils.response_400(f"invalid entity type: {type}")
+    return typedentity_getall(link)
 
+# ---------------------------------------------------------------------------- ENDPOINT: /api/entity/<type>/<id>
 # get a single entity of type, by id
-# ---------------------------------------------------- ENDPOINT: /api/entity/<type>/<id>
 @app.route('/api/entity/<type>/<int:id>', methods=['GET'])
-def entity_get_type(id):
-    return typedentity_get(type, id)
+def entity_get_type(type, id):
+    try:
+        link= db.__ENTITYTYPEMAPS__["link2type"][type]
+    except:
+        return db_utils.response_400(f"invalid entity type: {type}")
+    return typedentity_get(link, id)
 
-### -------------------------------- BOOKMARKS -------------------------------- ###
+### ----------------------------------------------------------------------------------------------- ###
+### ------------------------------------------ BOOKMARKS ------------------------------------------ ###
+### ----------------------------------------------------------------------------------------------- ###
 
+# ---------------------------------------------------------------------------- ENDPOINT: /dev/bookmarks
+# different route to denote this wouldn't be part of the public api
+@app.route('/dev/bookmarks', methods=['GET'])
+def bookmarks_getall():
+    try:
+        query= Bookmark.query.all()
+        if not query:
+            return db_utils.response(200, "no bookmarks")
+        return db_utils.response_200([e.serialize() for e in query])
+    except Exception as e:
+        return db_utils.response_500(e.__repr__())
+
+# ---------------------------------------------------------------------------- ENDPOINT: /api/user/bookmarks
 # this one requires the token as a header
 @app.route('/api/user/bookmarks', methods=['GET'])
 def userbookmarks_getall():
     try:
-        usertoken= request.headers['token']
-        if not usertoken:
-            return _response(400, "missing token")
-        query= Bookmark.query.filter_by(token= usertoken).first()
+        if not 'user-token' in request.headers:
+            return db_utils.response(400, "missing token", "required header not present: name: 'user-token', content: a logged-in user session indentifier")
+        usertoken= request.headers['user-token']
+        query= Bookmark.query.filter_by(token=usertoken).first()
         if not query:
-            return _response_400("invalid token")
-        return _response_200([e.serialize() for e in query])
-    except:
-        return _response_500()
+            return db_utils.response(400, "invalid token", "token does not point to any current user session")
+        return db_utils.response_200([e.serialize() for e in query])
+    except Exception as e:
+        return db_utils.response_500(e.__repr__())
+
+### ----------------------------------------------------------------------------------------------- ###
+### -------------------------------------------- TOOLS -------------------------------------------- ###
+### ----------------------------------------------------------------------------------------------- ###
+
+# ---------------------------------------------------------------------------- ENDPOINT: /execute?toolid=<int>
+@app.route('/execute', methods=['GET'])
+def execute():
+    try:
+        id = request.args.get('tool', type=int)
+        if not id:
+            return db_utils.response(203, "nothing was executed") # fail silently
+        result= tools.execute_tool(id)
+        if result > 0:
+            db_utils.perform_database_rowcount()
+            if result== 2: db_utils.refresh_entity_type_registry()
+        return db_utils.response(203, "executed")
+    except Exception as e:
+        return db_utils.response_500(e.__repr__())
+
+### ----------------------------------------------------------------------------------------------- ###
+### ---------------------------------------- MAIN + STARTUP --------------------------------------- ###
+### ----------------------------------------------------------------------------------------------- ###
 
 # this only runs if `$ python src/app.py` is executed
 if __name__ == '__main__':
     PORT = int(os.environ.get('PORT', 3000))
     app.run(host='0.0.0.0', port=PORT, debug=False)
+
+# very early initialization depending on running mode
+with app.app_context():
+
+    # only if ran through 'flask db run' (what pipenv run start does)
+    if db_utils.__RUNNING_MODE__ == 'normal':
+        db.__rowcounts__= {}
+        db_utils.proccess_columns_metadata()
+        print("\033[F\033[F")
+        db_utils.perform_database_rowcount()
+
+        # fill database on startup if FULLY empty (and if configured to)
+        if db_utils.__DB_AUTOFILL__ and db.__rowcounts__['total']==0:
+            db_utils.load_rows_from_file(db_utils.__DB_DEFAULTS_FILE__)
+        
+        db_utils.refresh_entity_type_registry()
+    else:
+        if db_utils.__RUNNING_MODE__ == 'wipedb':
+            tools.database_wipe()
+            os.kill(os.getpid(), signal.SIGTERM)

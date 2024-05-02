@@ -6,14 +6,15 @@ db = SQLAlchemy()
 class User(db.Model):
     __tablename__ = "users"
     _id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    username = db.Column(db.String(32), unique=True, nullable=False)            # public username
+    username = db.Column(db.String(32), unique=True, nullable=False)            # internal username
+    displayname = db.Column(db.String(64), nullable=False)                      # public displayname
     email = db.Column(db.String(32), unique=True, nullable=False)               # user email
     password = db.Column(db.String(32), nullable=False)                         # account password
     user_token= db.Column(db.String(256))                                       # current login session token, or null if not logged-in
     bookmarks = db.relationship('Bookmark', backref='user', lazy='dynamic')     # bookmarks
 
     def __repr__(self):
-        return f'<User {self._id}-{self.username}-{self.email}>'
+        return f'<User {self._id}-{self.username}-{self.email}-{self.displayname}>'
 
     def serialize(self):
         return {
@@ -60,15 +61,23 @@ class EntityType(db.Model):
     __tablename__ = "entity_types"
     _id= db.Column(db.Integer, primary_key=True, autoincrement=True)
     name= db.Column(db.String(32), unique=True, nullable=False)         # type name
+    link= db.Column(db.String(32), unique=True, nullable=False)         # api link name
     properties= db.Column(db.String(2048), nullable=False)              # required properties for its type
 
+    # defining custom init that generates link if not provided
+    def __init__(self, name=None, link=None, properties=None):
+        self.name= name
+        self.link= link if link else name
+        self.properties= properties
+
     def __repr__(self):
-        return f'<EntityType {self._id}-{self.name}>'
+        return f'<EntityType {self._id}-{self.name}-/api/{self.link}>'
 
     def serialize(self):
         return {
             "_id": self._id,
             "name": self.name,
+            "link": self.link,
             "properties": self.properties.split('|')
         }
     
