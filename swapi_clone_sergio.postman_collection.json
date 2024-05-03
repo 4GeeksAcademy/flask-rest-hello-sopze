@@ -1,0 +1,982 @@
+{
+	"info": {
+		"_postman_id": "c670d1af-0d39-4e0a-b215-de7c6580d00a",
+		"name": "swapi_clone_sergio",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "34162398"
+	},
+	"item": [
+		{
+			"name": "login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"if(jsonData && jsonData.message==\"ok\"){\r",
+							"    pm.environment.set(\"session_token\", jsonData.result);\r",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"token= pm.environment.get(\"session_token\");\r",
+							"\r",
+							"if(token != null) {\r",
+							"    console.log(\"Already logged in... I'll attempt to logout for you...\")\r",
+							"    host= pm.environment.get(\"host\");\r",
+							"    pm.sendRequest({\r",
+							"            url: host + \"/logout\",\r",
+							"            method: \"POST\",\r",
+							"            header: {\r",
+							"                \"Session-Token\": token\r",
+							"            }\r",
+							"        }, function (err, response) {\r",
+							"        json= response.json()\r",
+							"        if(json && json.message==\"ok\"){ console.log(\"Succesfully logged out!\") }\r",
+							"    });\r",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"account\": \"\",\n    \"password\": \"\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{host}}/login"
+			},
+			"response": [
+				{
+					"name": "DESCRIPTION",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "-- I've made a pre-request script to auto-logout if you're logged in --\n-- also, another script will automatically assign ENV 'session_token' if request succeeds\n\naccount (REQUIRED)\n  username or email\n\npassword\n  the account password",
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": "{{host}}/login"
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "login (username)",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"account\": \"elmandangas\",\n    \"password\": \"5678\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host}}/login"
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "login (email)",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"account\": \"michochorechulon@email.com\",\n    \"password\": \"abcd\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host}}/login"
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "logout [-TOKEN-]",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"if(jsonData && jsonData.message==\"ok\"){\r",
+							"    pm.environment.set(\"session_token\", null);\r",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Session-Token",
+						"value": "{{session_token}}",
+						"uuid": "0febb1a9-1240-49e0-be28-771e2cf40d67"
+					}
+				],
+				"url": "{{host}}/logout"
+			},
+			"response": []
+		},
+		{
+			"name": "get me User [-TOKEN-]",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Session-Token",
+						"value": "{{session_token}}",
+						"uuid": "21ff2450-20d4-4b74-b9e5-c9ba380ab623"
+					}
+				],
+				"url": "{{host}}/me"
+			},
+			"response": []
+		},
+		{
+			"name": "create User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"\",\n    \"displayname\": \"\",\n    \"email\": \"\",\n    \"password\": \"\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{host}}/api/user"
+			},
+			"response": [
+				{
+					"name": "DESCRIPTION",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "username (REQUIRED)\n  internal username used to login\n\ndisplayname (REQUIRED)\n  the name to publicly display\n\nemail (REQUIRED)\n  email account associated with this account\n\npassword (REQUIRED)\n  the password to log-in",
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": "{{host}}/api/user"
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "create User (gracielo)",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"gracielo\",\n    \"displayname\": \"Gracielo Redondo Jimenez\",\n    \"email\": \"miscuyons@redondelos.son\",\n    \"password\": \"unpasitopalantemaria\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host}}/api/user"
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "delete me User [-TOKEN-]",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"if(jsonData && jsonData.message==\"ok\"){\r",
+							"    pm.environment.set(\"session_token\", null);\r",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Session-Token",
+						"value": "{{session_token}}",
+						"uuid": "0bd0f2d3-425f-4fcb-977e-880cedeb4626"
+					}
+				],
+				"url": "{{host}}/api/user"
+			},
+			"response": []
+		},
+		{
+			"name": "get single User by name",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{host}}/api/user/"
+			},
+			"response": [
+				{
+					"name": "get single User (gracielo)",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": "{{host}}/api/user/gracielo"
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "toggle User Bookmark [-TOKEN-]",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Session-Token",
+						"value": "{{session_token}}",
+						"uuid": "e2259230-083f-41e3-b3f8-2be0f14f54eb"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"entity_id\": 1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{host}}/api/bookmark"
+			},
+			"response": []
+		},
+		{
+			"name": "delete all User Bookmark [-TOKEN-]",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Session-Token",
+						"value": "{{session_token}}",
+						"uuid": "6579bcff-2b55-4a3d-b617-1af046e77fdd"
+					}
+				],
+				"url": "{{host}}/api/bookmark"
+			},
+			"response": []
+		},
+		{
+			"name": "get all User Bookmark [-TOKEN-]",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Session-Token",
+						"value": "{{session_token}}",
+						"uuid": "15908ae0-d13a-42c6-a1ea-464886c140bd"
+					}
+				],
+				"url": "{{host}}/api/bookmark"
+			},
+			"response": []
+		},
+		{
+			"name": "create User Bookmark?id [-TOKEN-]",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Session-Token",
+						"value": "{{session_token}}",
+						"uuid": "4e48fc8c-eb89-429b-8db4-6815148832ca"
+					}
+				],
+				"url": {
+					"raw": "{{host}}/api/bookmark?id=1",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"bookmark"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "1",
+							"description": "entity _id"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete User Bookmark?id [-TOKEN-]",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Session-Token",
+						"value": "{{session_token}}",
+						"uuid": "64367833-81c4-4f4d-ab75-354a1548bb4d"
+					}
+				],
+				"url": {
+					"raw": "{{host}}/api/bookmark?id=1",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"bookmark"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "1",
+							"description": "entity _id"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "check User Bookmark?id [-TOKEN-]",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Session-Token",
+						"value": "{{session_token}}",
+						"uuid": "3f716e18-fa05-4a9e-9a9f-914d2f941a44"
+					}
+				],
+				"url": {
+					"raw": "{{host}}/api/bookmark?id=1",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"bookmark"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "1",
+							"description": "entity _id"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create EntityType",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"\",\n    \"link\": \"\",\n    \"properties\": \"\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{host}}/api/entitytype"
+			},
+			"response": [
+				{
+					"name": "DESCRIPTION",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "name (REQUIRED)\n  internal name\n\nlink\n  route to get all of type at /api/entity/[link], will be name if ommited or empty\n\nproperties (REQUIRED)\n  properties, separated by |, with optional type as 'myprop:type' (:int :str :bool, default str) and \n  optional [] for array, (arrays require type ie: 'myprop:str[]'",
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": "{{host}}/api/entitytype"
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "create EntityType (animal)",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"animal\",\n    \"link\": \"animals\",\n    \"properties\": \"name|length|weight|legs:int|is_biped:bool|is_smart:bool\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host}}/api/entitytype"
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "delete EntityType?id",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/api/entitytype?id=1",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"entitytype"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "1",
+							"description": "entity_type _id"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get all EntityType",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{host}}/api/entitytype"
+			},
+			"response": []
+		},
+		{
+			"name": "create Entity",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"\",\n    \"description\": \"\",\n    \"type\": \"\",\n    \"properties\": {}\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{host}}/api/entity/film"
+			},
+			"response": [
+				{
+					"name": "DESCRIPTION",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "name -> str (REQUIRED)\n  display name for this entity\n\ndescription -> str\n  display description for this entity\n\ntype -> str (REQUIRED)\n  internal name of the type you want to register this entity to, type must be registered\n\nproperties -> {} (REQUIRED)\n  JSON object with the required properties, see its EntityType to know what properties you need here",
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": "{{host}}/api/entity/film"
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "create Entity (film)",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"The awakening of the raging Testicles\",\n    \"description\": \"An awesome film only played in my thoughts\",\n    \"type\": \"film\",\n    \"properties\": {\n        \"episode_id\": 16,\n        \"director\": \"postman\",\n        \"producer\": \"pesteman\",\n        \"release_date\": \"1-1-2028\",\n        \"opening_crawl\": \"hello, not hello, world, wawawa\",\n        \"characters\":[],\n        \"planets\":[],\n        \"species\":[],\n        \"starships\":[],\n        \"vehicles\":[]\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host}}/api/entity"
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "create Entity (people)",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Lebron James\",\n    \"description\": \"This is not a game, you think is a game?\",\n    \"type\": \"people\",\n    \"properties\": {\n        \"height\": \"450\",\n        \"mass\": \"120\",\n        \"hair_color\": \"pink\",\n        \"skin_color\": \"green\",\n        \"eye_color\": \"transparent\",\n        \"birth_year\": \"500-AC\",\n        \"gender\": \"male\",\n        \"homeworld\": 1\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host}}/api/entity"
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "delete Entity?id",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/api/entity?id=1",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"entity"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "1",
+							"description": "entity _id"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get all Entity Copy",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{host}}/api/entity"
+			},
+			"response": []
+		},
+		{
+			"name": "[[DEV]] get all Bookmarks",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{host}}/dev/bookmark"
+			},
+			"response": []
+		},
+		{
+			"name": "[[DEV]] get all User",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{host}}/dev/user"
+			},
+			"response": []
+		},
+		{
+			"name": "[[DEV TOOLS]]",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "{{host}}/execute"
+			},
+			"response": [
+				{
+					"name": "CLEAR DB ROWS",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/execute?tool=2",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"execute"
+							],
+							"query": [
+								{
+									"key": "tool",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "RESET DB TO DEFAULT",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/execute?tool=3",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"execute"
+							],
+							"query": [
+								{
+									"key": "tool",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "create random user",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/execute?tool=5",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"execute"
+							],
+							"query": [
+								{
+									"key": "tool",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "modify random user",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/execute?tool=6",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"execute"
+							],
+							"query": [
+								{
+									"key": "tool",
+									"value": "6"
+								}
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "delete random user (not logged)",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/execute?tool=7",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"execute"
+							],
+							"query": [
+								{
+									"key": "tool",
+									"value": "7"
+								}
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "create random entitytype",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/execute?tool=8",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"execute"
+							],
+							"query": [
+								{
+									"key": "tool",
+									"value": "8"
+								}
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "create random entity",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/execute?tool=9",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"execute"
+							],
+							"query": [
+								{
+									"key": "tool",
+									"value": "9"
+								}
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "delete random entity",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/execute?tool=10",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"execute"
+							],
+							"query": [
+								{
+									"key": "tool",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "create random bookmark",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/execute?tool=11",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"execute"
+							],
+							"query": [
+								{
+									"key": "tool",
+									"value": "11"
+								}
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "delete random bookmark",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/execute?tool=12",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"execute"
+							],
+							"query": [
+								{
+									"key": "tool",
+									"value": "12"
+								}
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		}
+	]
+}
