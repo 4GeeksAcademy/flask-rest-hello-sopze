@@ -1,6 +1,6 @@
 import math, os, subprocess
 
-# NOTE: this script is NOT compatible with the default 4Geeks Template, as it depends on some code in app.py
+# NOTE: this script as-is is NOT compatible with the default 4Geeks Template, as it depends on some code in app.py
 
 __LOG__= open("refresh.log","w")
 __PBS__= 78

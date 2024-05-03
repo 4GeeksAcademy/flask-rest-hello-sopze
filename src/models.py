@@ -10,7 +10,7 @@ class User(db.Model):
     displayname = db.Column(db.String(64), nullable=False)                      # public displayname
     email = db.Column(db.String(32), unique=True, nullable=False)               # user email
     password = db.Column(db.String(32), nullable=False)                         # account password
-    user_token= db.Column(db.String(256))                                       # current login session token, or null if not logged-in
+    user_token= db.Column(db.String(64))                                        # current login session token, or null if not logged-in
     bookmarks = db.relationship('Bookmark', backref='user', lazy='dynamic')     # bookmarks
 
     def __repr__(self):
@@ -20,7 +20,11 @@ class User(db.Model):
         return {
             "_id": self._id,
             "name": self.username,
-            "email": self.email
+            "nick": self.displayname,
+            "email": self.email,
+            # this is only here to debug
+            "password": self.password,
+            "user_token": self.user_token
         }
 
 class Entity(db.Model):

@@ -2,7 +2,7 @@
 
 Revision ID: rev_db_sergio
 Revises: 
-Create Date: 2024-05-02 17:54:10.800464
+Create Date: 2024-05-03 15:05:19.871474
 
 """
 from alembic import op
@@ -33,7 +33,7 @@ def upgrade():
     sa.Column('displayname', sa.String(length=64), nullable=False),
     sa.Column('email', sa.String(length=32), nullable=False),
     sa.Column('password', sa.String(length=32), nullable=False),
-    sa.Column('user_token', sa.String(length=256), nullable=True),
+    sa.Column('user_token', sa.String(length=64), nullable=True),
     sa.PrimaryKeyConstraint('_id'),
     sa.UniqueConstraint('email'),
     sa.UniqueConstraint('username')

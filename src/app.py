@@ -46,45 +46,102 @@ def sitemap():
         return generate_sitemap(app, filterlinks)
     return generate_sitemap(app)
 
-# ---------------------------------------------------------------------------- ENDPOINT: /dev/test
-@app.route('/dev/test', methods=['GET'])
-def api_code_test():
-    txt="dev endpoint i used to test several things"
-    print(txt)
-    return db_utils.response(418, "I'm a teapot", txt)
+### ----------------------------------------------------------------------------------------------- ###
+### -------------------------------------------- LOGIN -------------------------------------------- ###
+### ----------------------------------------------------------------------------------------------- ###
 
-# get API endpoints for each type
-# ---------------------------------------------------------------------------- ENDPOINT: /api
-@app.route('/api', methods=['GET'])
-def apimap():
-    result= {
-        "films": f"/api/entity/films", 
-        "people": f"/api/entity/people", 
-        "planets": f"/api/entity/planets", 
-        "species": f"/api/entity/species", 
-        "starships": f"/api/entity/starships", 
-        "vehicles": f"/api/entity/vehicles"
-    }
-    return db_utils.response_200(result)
+# ---------------------------------------------------------------------------- ENDPOINT: /login POST
+# basic login
+@app.route('/login', methods=['POST'])
+def login():
+    try:
+        error, data= db_utils.check_valid_json_body(request)
+        if error: return db_utils.response(400, error)
+        error= db_utils.check_missing_properties_manual(data, ['account', 'password'])
+        if error: return db_utils.response(400, error)
+        account= data['account']
+        user= User.query.filter_by(email=account, password=data['password']).first()
+        if not user:
+            user= User.query.filter_by(username=account, password=data['password']).first()
+        if not user:
+            return db_utils.response(400, "invalid account or password")
+        token= db_utils.generate_token()
+        user.user_token= token
+        db.session.commit()
+        return db_utils.response_200(token)
+    except Exception as e:
+        return db_utils.response_500(e.__repr__())
+
+# ---------------------------------------------------------------------------- ENDPOINT: /logout [TOKEN] POST
+# basic logout
+@app.route('/logout', methods=['POST'])
+def logout():
+    try:
+        error, user= db_utils.check_valid_auth(request)
+        if error: return db_utils.response(400, error)
+        user.user_token= None
+        db.session.commit()
+        return db_utils.response_200()
+    except Exception as e:
+        return db_utils.response_500(e.__repr__())
+
+# ---------------------------------------------------------------------------- ENDPOINT: /me GET
+# gets yourself
+@app.route('/me', methods=['GET'])
+def me():
+    try:
+        error, user= db_utils.check_valid_auth(request)
+        if error: return db_utils.response(400, error)
+        return db_utils.response_200(user.serialize())
+    except Exception as e:
+        return db_utils.response_500(e.__repr__())
 
 ### ----------------------------------------------------------------------------------------------- ###
 ### -------------------------------------------- USERS -------------------------------------------- ###
 ### ----------------------------------------------------------------------------------------------- ###
 
-# ---------------------------------------------------------------------------- ENDPOINT: /dev/user
-# get all user
-# different route to denote this wouldn't be part of the public api
-@app.route('/dev/user', methods=['GET'])
-def user_getall():
+# ---------------------------------------------------------------------------- ENDPOINT: /api/user POST
+# create new user
+@app.route('/api/user', methods=['POST'])
+def user_post():
     try:
-        query= User.query.all()
-        if not query:
-            return db_utils.response(200, "no registered users")
-        return db_utils.response_200([e.serialize() for e in query])
+        error, data= db_utils.check_valid_json_body(request)
+        if error: return db_utils.response(400, error)
+        error= db_utils.check_missing_properties(data, db.__metacolumns__['users'])
+        if error: return db_utils.response(400, error)
+
+        newuser= User(
+            username=data['username'],
+            displayname=data['displayname'],
+            email=data['email'],
+            password=data['password']
+        )
+        if User.query.filter_by(email=newuser.email).first(): return db_utils.response(400, "email already registered")
+        elif User.query.filter_by(username=newuser.username).first(): return db_utils.response(400, "username already taken")
+        else:
+            db.session.add(newuser)
+            db.session.commit()
+            db_utils.perform_database_rowcount()
+            return db_utils.response_200()
     except Exception as e:
         return db_utils.response_500(e.__repr__())
 
-# ---------------------------------------------------------------------------- ENDPOINT: /api/user/<int:id>
+# ---------------------------------------------------------------------------- ENDPOINT: /api/user [TOKEN] DELETE
+# requires TOKEN
+# delete user
+@app.route('/api/user', methods=['DELETE'])
+def user_delete():
+    try:
+        error, user= db_utils.check_valid_auth(request)
+        if error: return db_utils.response(400, error)
+        db.session.delete(user)
+        db.session.commit()
+        db_utils.perform_database_rowcount()
+        return db_utils.response_200()
+    except Exception as e:
+        return db_utils.response_500(e.__repr__())
+
+# ---------------------------------------------------------------------------- ENDPOINT: /api/user/<int:id> GET
 # get user by username
 @app.route('/api/user/<name>', methods=['GET'])
 def user_get(name):
@@ -98,28 +155,98 @@ def user_get(name):
     except Exception as e:
         return db_utils.response_500(e.__repr__())
 
-# ---------------------------------------------------------------------------- ENDPOINT: /api/user POST
-# create new user
-@app.route('/api/user', methods=['POST'])
-def user_post():
+### ----------------------------------------------------------------------------------------------- ###
+### ------------------------------------------ BOOKMARKS ------------------------------------------ ###
+### ----------------------------------------------------------------------------------------------- ###
+
+# ---------------------------------------------------------------------------- ENDPOINT: /api/bookmark[?id] [TOKEN] POST
+# requires TOKEN
+# toggle user bookmark, (only creates if ?id param given, also, with ?id param body is not required)
+@app.route('/api/bookmark', methods=['POST'])
+def userbookmark_post():
     try:
-        valid, data= db_utils.check_valid_json_body(request)
-        if not valid: return data
-        error= db_utils.check_missing_properties(data, db.__metacolumns__['users'])
-        if error: return db_utils.response(400, f"Missing required property '{error}'")
-        newuser= User(
-            username=data['username'],
-            displayname=data['displayname'],
-            email=data['email'],
-            password=data['password']
-        )
-        if User.query.filter_by(email=newuser.email).first(): return db_utils.response(400, "email already registered")
-        elif User.query.filter_by(username=newuser.username).first(): return db_utils.response(400, "username already taken")
-        else:
-            db.session.add(newuser)
+        error, user= db_utils.check_valid_auth(request)
+        if error: return db_utils.response(400, error)
+
+        id = request.args.get('id', type=int)
+        if not id:
+            error, data= db_utils.check_valid_json_body(request)
+            if error: return db_utils.response(400, error)
+
+            error= db_utils.check_missing_properties(data, db.__metacolumns__['bookmarks'], exceptions=["user_id"])
+            if error: return db_utils.response(400, error)
+
+            query= Bookmark.query.filter_by(user_id=user._id).first()
+            if not query: # add it
+                error, id= db_utils.get_json_id(data, 'entity_id')
+                if error: return db_utils.response(400, error)
+                entity= Entity.query.get(id)
+                if not entity: return db_utils.response(400, f"no such entity with ID {id}")
+                newbookmark= Bookmark(
+                    user_id=user._id,
+                    entity_id= id
+                )
+                db.session.add(newbookmark)
+                db.session.commit()
+                db_utils.perform_database_rowcount()
+                return db_utils.response(200, "added")
+            db.session.delete(query)
             db.session.commit()
-            db_utils.refresh_entity_type_registry()
-            return db_utils.response_200()
+            db_utils.perform_database_rowcount()
+            return db_utils.response(200, "removed")
+        else:
+            bookmark= Bookmark.query.filter_by(user_id=user._id, entity_id=id).first()
+            if bookmark: return db_utils.response(400, f"user {user.username} has already bookmarked entity with ID {id}")
+            newbookmark= Bookmark(
+                user_id=user._id,
+                entity_id= id
+            )
+            db.session.add(newbookmark)
+            db.session.commit()
+            db_utils.perform_database_rowcount()
+            return db_utils.response(200, "added")
+    except Exception as e:
+        return db_utils.response_500(e.__repr__())
+
+# ---------------------------------------------------------------------------- ENDPOINT: /api/bookmark[?id] [TOKEN] DELETE
+# requires TOKEN
+# delete all user bookmarks, (only one if ?id param given)
+@app.route('/api/bookmark', methods=['DELETE'])
+def userbookmark_deleteall():
+    try:
+        error, user= db_utils.check_valid_auth(request)
+        if error: return db_utils.response(400, error)
+        id = request.args.get('id', type=int)
+        if not id:
+            query= Bookmark.query.filter_by(user_id=user._id).all()
+            if not query: return db_utils.response(200, f"no bookmarks for user '{user.username}'")
+            db.session.delete(query)
+            db.session.commit()
+            db_utils.perform_database_rowcount()
+        bookmark= Bookmark.query.filter_by(user_id=user._id, entity_id=id).first()
+        if not bookmark: return db_utils.response(400, f"user '{user.username}' has not bookmarked entity with ID {id}")
+        db.session.delete(bookmark)
+        db.session.commit()
+        db_utils.perform_database_rowcount()
+        return db_utils.response_200()
+    except Exception as e:
+        return db_utils.response_500(e.__repr__())
+
+# ---------------------------------------------------------------------------- ENDPOINT: /api/bookmark[?id] [TOKEN] GET
+# requires TOKEN
+# get all user bookmarks, (get true/false str of a single bookmark if ?id param given)
+@app.route('/api/bookmark', methods=['GET'])
+def userbookmark_getall():
+    try:
+        error, user = db_utils.check_valid_auth(request)
+        if error: return db_utils.response(400, error)
+        id = request.args.get('id', type=int)
+        if not id:
+            query= Bookmark.query.filter_by(user_id=user._id).all()
+            if not query: return db_utils.response(200, f"no bookmarks for user '{user.username}'")
+            return db_utils.response_200([e.serialize() for e in query])
+        bookmark= Bookmark.query.filter_by(user_id=user._id, entity_id=id).first()
+        return db_utils.response(200, "true" if bookmark else "false")
     except Exception as e:
         return db_utils.response_500(e.__repr__())
 
@@ -127,7 +254,49 @@ def user_post():
 ### ---------------------------------------- ENTITIY TYPES ---------------------------------------- ###
 ### ----------------------------------------------------------------------------------------------- ###
 
-# ---------------------------------------------------------------------------- ENDPOINT: /api/entitytype
+# ---------------------------------------------------------------------------- ENDPOINT: /api/entitytype POST
+# create new entitytype
+@app.route('/api/entitytype', methods=['POST'])
+def entitytype_post():
+    try:
+        error, data= db_utils.check_valid_json_body(request)
+        if error: return db_utils.response(400, error)
+        error= db_utils.check_missing_properties(data, db.__metacolumns__['entity_types'])
+        if error: return db_utils.response(400, error)
+
+        newtype= EntityType(
+            name=data['name'],
+            link=data['link'] if 'link' in data else None,
+            properties=data['properties']
+        )
+        if EntityType.query.filter_by(link=newtype.link).first(): return db_utils.response(400, "link is already in use")
+        elif EntityType.query.filter_by(name=newtype.name).first(): return db_utils.response(400, "type name already registered")
+        else: 
+            db.session.add(newtype)
+            db.session.commit()
+            db_utils.perform_database_fullcount()
+        return db_utils.response_200()
+    except Exception as e:
+        return db_utils.response_500(e.__repr__())
+
+# ---------------------------------------------------------------------------- ENDPOINT: /api/entitytype?id DELETE
+# delete an entitytype (if no entities using it)
+@app.route('/api/entitytype', methods=['DELETE'])
+def entitytype_get():
+    try:
+        id = request.args.get('id', type=int)
+        if not id: return db_utils.response(400, "missing required parameter id")
+        entitytype = EntityType.query.get(id)
+        if not entitytype: return db_utils.response(400, f"no such entity_type with ID {id}")
+        query= Entity.query.filter_by(type_id=id).count()
+        if query > 0: return db_utils.response(400, "unable to delete entity_type while it has entities using it")
+        db.session.delete(entitytype)
+        db.session.commit()
+        db_utils.perform_database_fullcount()
+    except Exception as e:
+        return db_utils.response_500(e.__repr__())
+
+# ---------------------------------------------------------------------------- ENDPOINT: /api/entitytype GET
 # get all entitytype
 @app.route('/api/entitytype', methods=['GET'])
 def entitytype_getall():
@@ -139,67 +308,20 @@ def entitytype_getall():
     except Exception as e:
         return db_utils.response_500(e.__repr__())
 
-# ---------------------------------------------------------------------------- ENDPOINT: /api/entitytype/<int:id>
-# get entitytype by _id or name
-@app.route('/api/entitytype/<param>', methods=['GET'])
-def entitytype_get(param):
-    try:
-        result= EntityType.query.get(int(param)) if param.isdigit() else EntityType.query.filter_by(name=param).first()
-        if not result:
-            return db_utils.response(404, f"no such entity type with id/name: {param}")
-        return db_utils.response_200(result.serialize())
-    except Exception as e:
-        return db_utils.response_500(e.__repr__())
-
-# ---------------------------------------------------------------------------- ENDPOINT: /api/entitytype POST
-# create new entitytype
-@app.route('/api/entitytype', methods=['POST'])
-def entitytype_post():
-    try:
-        valid, data= db_utils.check_valid_json_body(request)
-        if not valid: return data
-        error= db_utils.check_missing_properties(data, db.__metacolumns__['entity_types'])
-        if error: return db_utils.response(400, f"Missing required property '{error}'")
-        newtype= EntityType(
-            name=data['name'],
-            link=data['link'] if 'link' in data else None,
-            properties=data['properties']
-        )
-        if EntityType.query.filter_by(link=newtype.link).first(): return db_utils.response(400, "link is already in use")
-        elif EntityType.query.filter_by(name=newtype.name).first(): return db_utils.response(400, "type name already registered")
-        else: 
-            db.session.add(newtype)
-            db.session.commit()
-            db_utils.refresh_entity_type_registry()
-        return db_utils.response_200()
-    except Exception as e:
-        return db_utils.response_500(e.__repr__())
-
 ### ----------------------------------------------------------------------------------------------- ###
 ### ------------------------------------------- ENTITIES ------------------------------------------ ###
 ### ----------------------------------------------------------------------------------------------- ###
 
-# ---------------------------------------------------------------------------- ENDPOINT: /api/entity
-# get all entities
-@app.route('/api/entity', methods=['GET'])
-def entity_getall():
-    try:
-        result= Entity.query.all()
-        if not result:
-            return db_utils.response(200, "no registered entities")
-        return db_utils.response_200([e.serialize() for e in result])
-    except Exception as e:
-        return db_utils.response_500(e.__repr__())
-
-# ---------------------------------------------------------------------------- ENDPOINT: /api/entity  POST
-# create new entities
+# ---------------------------------------------------------------------------- ENDPOINT: /api/entity POST
+# create new entity
 @app.route('/api/entity', methods=['POST'])
 def entity_post():
     try:
-        valid, data= db_utils.check_valid_json_body(request)
-        if not valid: return data
-        error= db_utils.check_missing_properties(data, db.__metacolumns__['entities'], exceptions=["type_id"], additions=["type"])
-        if error: return db_utils.response(400, f"Missing required property '{error}'")
+        error, data= db_utils.check_valid_json_body(request)
+        if error: return db_utils.response(400, error)
+        error= db_utils.check_missing_properties(data, db.__metacolumns__['entities'], remaps=[{"type_id", "type"}])
+        if error: return db_utils.response(400, error)
+
         if not data['type'] in db.__ENTITYTYPEMAPS__['type2id']: return db_utils.response(400, "invalid entity type")
         newentity= Entity(
             name=data['name'],
@@ -211,8 +333,63 @@ def entity_post():
         else: 
             db.session.add(newentity)
             db.session.commit()
-            db_utils.refresh_entity_type_registry()
+            db_utils.perform_database_rowcount()
         return db_utils.response_200()
+    except Exception as e:
+        return db_utils.response_500(e.__repr__())
+
+# this was taking too long, i'll eventually finish this but not now xD
+# ---------------------------------------------------------------------------- ENDPOINT: /api/entity PUT
+# modify an entity
+#@app.route('/api/entity', methods=['PUT'])
+#def entity_put():
+#    try:
+#        error, data= db_utils.check_valid_json_body(request)
+#        if error: return db_utils.response(400, error)
+#        error, id= db_utils.get_json_id(data)
+#        if error: return db_utils.response(400, error)
+#
+#        entity= Entity.query.get(id)
+#        if not entity: return db_utils.response(400, f"no entity with ID '{id}'")
+#
+#        error= db_utils.check_invalid_properties(data, db.__metacolumns__['entities'], remaps={"type_id","type"})
+#        if error: return db_utils.response(400, error) .response(400, f"Invalid property '{error}'")
+#        if 'type' in data and not data['type'] in db.__ENTITYTYPEMAPS__['type2id']: return db_utils.response(400, "invalid entity type")
+#
+#        entity= Entity.query.get(id)
+#        if not entity: return db_utils.response(400, f"no such entity with ID {id}")
+#
+#        print(entity.keys())
+#        
+#        return db_utils.response_200()
+#    except Exception as e:
+#        return db_utils.response_500(e.__repr__())
+
+# ---------------------------------------------------------------------------- ENDPOINT: /api/entity?id DELETE
+# delete an entity
+@app.route('/api/entity', methods=['DELETE'])
+def entity_delete(type, id):
+    try:
+        id = request.args.get('id', type=int)
+        if not id: return db_utils.response(400, "missing required parameter id")
+        entity = Entity.query.get(id)
+        if not entity: return db_utils.response(400, f"no such entity with ID {id}")
+        db.session.delete(entity)
+        db.session.commit()
+        db_utils.perform_database_rowcount()
+        return db_utils.response_400(f"invalid entity type: {type}")
+    except Exception as e:
+        return db_utils.response_500(e.__repr__())
+
+# ---------------------------------------------------------------------------- ENDPOINT: /api/entity GET
+# get all entities
+@app.route('/api/entity', methods=['GET'])
+def entity_getall():
+    try:
+        result= Entity.query.all()
+        if not result:
+            return db_utils.response(200, "no registered entities")
+        return db_utils.response_200([e.serialize() for e in result])
     except Exception as e:
         return db_utils.response_500(e.__repr__())
 
@@ -243,8 +420,8 @@ def typedentity_get(typename, tid):
     except Exception as e:
         return db_utils.response_500(e.__repr__())
 
-# ---------------------------------------------------------------------------- ENDPOINT: /api/entity/<type>
-# get all entities of type 
+# ---------------------------------------------------------------------------- ENDPOINT: /api/entity/<type> GET
+# get all entities of type
 @app.route('/api/entity/<type>', methods=['GET'])
 def entity_getall_type(type):
     try:
@@ -253,7 +430,7 @@ def entity_getall_type(type):
         return db_utils.response_400(f"invalid entity type: {type}")
     return typedentity_getall(link)
 
-# ---------------------------------------------------------------------------- ENDPOINT: /api/entity/<type>/<id>
+# ---------------------------------------------------------------------------- ENDPOINT: /api/entity/<type>/<id> GET
 # get a single entity of type, by id
 @app.route('/api/entity/<type>/<int:id>', methods=['GET'])
 def entity_get_type(type, id):
@@ -264,12 +441,25 @@ def entity_get_type(type, id):
     return typedentity_get(link, id)
 
 ### ----------------------------------------------------------------------------------------------- ###
-### ------------------------------------------ BOOKMARKS ------------------------------------------ ###
+### --------------------------------------------- DEV --------------------------------------------- ###
 ### ----------------------------------------------------------------------------------------------- ###
 
-# ---------------------------------------------------------------------------- ENDPOINT: /dev/bookmarks
+# ---------------------------------------------------------------------------- ENDPOINT: /dev/user GET
+# get all user
 # different route to denote this wouldn't be part of the public api
-@app.route('/dev/bookmarks', methods=['GET'])
+@app.route('/dev/user', methods=['GET'])
+def user_getall():
+    try:
+        query= User.query.all()
+        if not query:
+            return db_utils.response(200, "no registered users")
+        return db_utils.response_200([e.serialize() for e in query])
+    except Exception as e:
+        return db_utils.response_500(e.__repr__())
+
+# ---------------------------------------------------------------------------- ENDPOINT: /dev/bookmark GET
+# different route to denote this wouldn't be part of the public api
+@app.route('/dev/bookmark', methods=['GET'])
 def bookmarks_getall():
     try:
         query= Bookmark.query.all()
@@ -279,32 +469,23 @@ def bookmarks_getall():
     except Exception as e:
         return db_utils.response_500(e.__repr__())
 
-# ---------------------------------------------------------------------------- ENDPOINT: /api/user/bookmarks
-# this one requires the token as a header
-@app.route('/api/user/bookmarks', methods=['GET'])
-def userbookmarks_getall():
-    try:
-        if not 'user-token' in request.headers:
-            return db_utils.response(400, "missing token", "required header not present: name: 'user-token', content: a logged-in user session indentifier")
-        usertoken= request.headers['user-token']
-        query= Bookmark.query.filter_by(token=usertoken).first()
-        if not query:
-            return db_utils.response(400, "invalid token", "token does not point to any current user session")
-        return db_utils.response_200([e.serialize() for e in query])
-    except Exception as e:
-        return db_utils.response_500(e.__repr__())
+# ---------------------------------------------------------------------------- ENDPOINT: /dev/test GET
+@app.route('/dev/test', methods=['GET'])
+def api_code_test():
+    txt="dev endpoint i used to make code tests"
+    print(txt)
+    return db_utils.response(418, "I'm a teapot", txt)
 
 ### ----------------------------------------------------------------------------------------------- ###
 ### -------------------------------------------- TOOLS -------------------------------------------- ###
 ### ----------------------------------------------------------------------------------------------- ###
 
-# ---------------------------------------------------------------------------- ENDPOINT: /execute?toolid=<int>
-@app.route('/execute', methods=['GET'])
+# ---------------------------------------------------------------------------- ENDPOINT: /execute?toolid=<int> GET
+@app.route('/execute', methods=['GET','HEAD'])
 def execute():
     try:
         id = request.args.get('tool', type=int)
-        if not id:
-            return db_utils.response(203, "nothing was executed") # fail silently
+        if not id: return db_utils.response(400, "no executed") # fail silently
         result= tools.execute_tool(id)
         if result > 0:
             db_utils.perform_database_rowcount()
@@ -317,7 +498,6 @@ def execute():
 ### ---------------------------------------- MAIN + STARTUP --------------------------------------- ###
 ### ----------------------------------------------------------------------------------------------- ###
 
-# this only runs if `$ python src/app.py` is executed
 if __name__ == '__main__':
     PORT = int(os.environ.get('PORT', 3000))
     app.run(host='0.0.0.0', port=PORT, debug=False)

@@ -17,6 +17,7 @@ CONTENT_TYPE_JSON= {'Content-Type': 'application/json'}
 
 CHARSET_DEFAULT= "abcdefghijklmnopqrstuvwxyz0123456789_"
 CHARSET_ALPHA= "abcdefghijklmnopqrstuvwxyz"
+CHARSET_ALPHALU= "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 CHARSET_ALPHANUMERIC= "abcdefghijklmnopqrstuvwxyz0123456789"
 CHARSET_CONSONANTS= "bcdfghjklmnpqrstvwxyz"
 CHARSET_VOWELS= "aeiou"
@@ -51,6 +52,10 @@ def proccess_columns_metadata():
         return " | ".join(result)
     print("\033[1;92m\ntable columns: \033[1;90m(\033[1;93mN\033[1;90m= nullable, \033[1;93mU\033[1;90m= unique)\n ", "\n  ".join([f"\033[4;97m{key}\033[24m: \033[0;94m{__meta_repr__(db.__metacolumns__[key])}" for key in db.__metacolumns__.keys()]), "\n\033[0m")     
 
+def perform_database_fullcount():
+    perform_database_rowcount()
+    refresh_entity_type_registry()
+
 def perform_database_rowcount():
     try:
         lc= [ User.query.count(), EntityType.query.count(), Entity.query.count(), Bookmark.query.count() ]
@@ -80,12 +85,16 @@ def generate_random_str(min:int, max:int=None, charset:str=CHARSET_DEFAULT) -> s
     generated= []
     charset_size= len(charset)
     for _ in range(randint(min, max)):
-        generated.append(CHARSET_DEFAULT[randrange(charset_size)])
+        generated.append(charset[randrange(charset_size)])
     return "".join(generated)
 
 # generates a random email alike string of a given size
 def generate_random_email_str(min:int, max:int=None) -> str:
     return "".join([generate_random_str(min, max, CHARSET_DEFAULT), '@', generate_random_str(5, 8, CHARSET_ALPHA), '.com'])
+
+# the most basic random-str token just to get it working, didn't wanted to implement anything fancier
+def generate_token() -> str:
+    return generate_random_str(64, charset=CHARSET_ALPHALU)
 
 def response(status, message, data=None):
     return jsonify({ "message": message, "result": data } if not data == None else { "message": message }), status, CONTENT_TYPE_JSON
@@ -95,19 +104,28 @@ def response_400(data=None): return response(400, "BAD REQUEST", data)
 def response_500(data=None): return response(500, "SERVER ERROR", data)
 
 # basic common tests for any POST/PUT request (header, json etc...)
-# returns [false , an-error-response] if fails or [true, the-json-data] if succeeds
+# returns [the-error-str, the-data]
 def check_valid_json_body(request):
     if not 'Content-Type' in request.headers or not request.headers['Content-Type'] == "application/json":
-        return False, response(400, "Content-Type must be 'application/json'")
+        return "Content-Type is not 'application/json'", None
     if not request.data:
-        return False, response(400, "Body must contain entity data")
+        return "body must contain entity data", None
     try:
         data= request.json
         if not data:
-            return False, response(400, "Body contains an empty JSON")
+            return "body contains no JSON", None
     except:
-        return False, response(400, "Body contains invalid JSON data")
-    return True, data
+        return "body contains no valid JSON", None
+    return None, data
+
+# test auth request
+def check_valid_auth(request):
+    if not 'Session-Token' in request.headers:
+        return "missing session token", None
+    user= User.query.filter_by(user_token=request.headers['Session-Token']).first()
+    if not user:
+        return "invalid session token", None
+    return None, user
 
 # get any model's columns metadata
 def get_columns_meta(columns):
@@ -119,12 +137,44 @@ def get_columns_meta(columns):
             meta[c.name]= [ [pytype, c.type], c.nullable, c.unique ] # 'columnname'= [[ python type, db value type], nullable, unique]
     return meta
 
-# check a dict keys against metacolumns (with columns names and nullable)
-def check_missing_properties(data, metacolumns, exceptions={}, additions=None):
-    for p in list(metacolumns.keys()) + additions:
-        if not p in data and not p in exceptions and not metacolumns[p][1]:
-            return p
+# check a list of properties against data
+def check_missing_properties_manual(data, props):
+    for p in props:
+        if not p in data:
+            return f"missing required property '{p}'"
     return None
+
+# check a metacolumns properties against data (with columns names and nullable)
+def check_missing_properties(data, metacolumns, exceptions={}, additions=[], remaps={}):
+    props= list(metacolumns.keys()) + additions
+    for r in remaps.keys():
+        props.append(remaps[r])
+        del props[r]
+    for p in props:
+        if not p in data and not p in exceptions and not metacolumns[p][1]:
+            return f"missing required property '{p}'"
+    return None
+
+# check a data against metacolumns to check if assignable, allows metacolumns remappings
+def check_invalid_properties(data, metacolumns, remaps={}):
+    props= list(metacolumns.keys())
+    for r in remaps.keys():
+        props.append(remaps[r])
+        del props[r]
+    for p in data:
+        if not p in props:
+            return f"unassignable property '{p}'"
+    return None
+
+def get_json_id(data, prop='id'):
+    if not prop in data: 
+        return "missing ID", None
+    value= data[prop]
+    if not type(value) == int: 
+        if not value.isnumeric(): 
+            return "invalid ID: must be or represent an integer", None
+        value= int(value)
+    return None, value
 
 # check if value is assignable to a column type
 def get_value_for_column(value, column_type):
